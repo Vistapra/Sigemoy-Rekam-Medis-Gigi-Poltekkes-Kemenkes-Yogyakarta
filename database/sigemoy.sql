@@ -1,0 +1,1338 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Waktu pembuatan: 01 Sep 2024 pada 16.57
+-- Versi server: 10.6.17-MariaDB-cll-lve
+-- Versi PHP: 8.3.8
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `bumn7534_sigemoy`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) NOT NULL,
+  `value` mediumtext NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `dokter`
+--
+
+CREATE TABLE `dokter` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `nip` varchar(255) DEFAULT NULL,
+  `nama` varchar(255) NOT NULL,
+  `no_hp` varchar(255) NOT NULL,
+  `alamat` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `dokter`
+--
+
+INSERT INTO `dokter` (`id`, `user_id`, `nip`, `nama`, `no_hp`, `alamat`, `created_at`, `updated_at`) VALUES
+(1, 2, '197811192010122002', 'Drg Fajar Dini S', '088232324437', 'Gunung Kidul Yogyakarta', '2024-08-28 03:26:40', '2024-08-28 03:26:40');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `edukasi`
+--
+
+CREATE TABLE `edukasi` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `deskripsi` text NOT NULL,
+  `media_type` enum('foto','video_upload','video_url') NOT NULL,
+  `media_path` varchar(255) DEFAULT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `edukasi`
+--
+
+INSERT INTO `edukasi` (`id`, `judul`, `deskripsi`, `media_type`, `media_path`, `video_url`, `created_at`, `updated_at`) VALUES
+(1, 'Pentingnya Sistem Rekam Medis Gigi Digital dalam Praktik Modern', 'Sistem rekam medis gigi digital telah merevolusi cara dokter gigi mengelola informasi pasien. Tidak hanya meningkatkan efisiensi, sistem ini juga memungkinkan akurasi diagnosis yang lebih tinggi dan perawatan yang lebih personal. Rekam medis digital memungkinkan penyimpanan data yang komprehensif, termasuk riwayat perawatan, foto intraoral, radiografi, dan catatan perawatan. Sistem ini memfasilitasi akses cepat ke informasi pasien, memungkinkan dokter gigi untuk membuat keputusan klinis yang lebih baik. Selain itu, rekam medis digital mendukung kolaborasi antar profesional kesehatan, memungkinkan pertukaran informasi yang aman dan efisien. Implementasi sistem ini juga meningkatkan kepatuhan terhadap regulasi privasi pasien seperti HIPAA di Amerika Serikat. Meskipun investasi awal mungkin signifikan, manfaat jangka panjang dalam hal efisiensi, akurasi, dan perawatan pasien jauh melebihi biayanya.', 'foto', 'fotos/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', NULL, '2024-08-28 05:22:54', '2024-08-28 05:22:54'),
+(2, 'Standarisasi Kode dalam Rekam Medis Gigi: Menuju Interoperabilitas Global', 'Standarisasi kode dalam rekam medis gigi adalah langkah krusial menuju interoperabilitas sistem kesehatan global. Penggunaan sistem kode yang seragam, seperti kode CDT (Current Dental Terminology) atau ICD-10-CM untuk diagnosis gigi, memungkinkan komunikasi yang lebih efektif antar penyedia layanan kesehatan. Standarisasi ini memfasilitasi pertukaran data yang akurat, mengurangi kesalahan interpretasi, dan meningkatkan kualitas perawatan pasien. Dalam konteks global, standarisasi memungkinkan analisis data kesehatan gigi lintas negara, mendukung penelitian epidemiologi, dan membantu dalam perumusan kebijakan kesehatan publik. Namun, implementasi standar global menghadapi tantangan seperti perbedaan sistem kesehatan antar negara dan resistensi terhadap perubahan. Diperlukan kolaborasi internasional yang kuat antara organisasi profesional, pemerintah, dan industri teknologi kesehatan untuk mencapai standarisasi yang efektif dan diterima secara luas.', 'foto', 'fotos/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', NULL, '2024-08-28 05:23:25', '2024-08-28 05:23:25'),
+(3, 'Manajemen Risiko dan Keamanan Data dalam Rekam Medis Gigi Elektronik', 'Keamanan data dalam rekam medis gigi elektronik adalah prioritas utama dalam era digital. Informasi kesehatan yang sensitif harus dilindungi dari akses tidak sah, pelanggaran data, dan kehilangan. Manajemen risiko dalam konteks ini melibatkan implementasi berbagai lapisan keamanan, termasuk enkripsi data, autentikasi multi-faktor, dan audit trail yang komprehensif. Praktik gigi harus mengembangkan dan menerapkan kebijakan keamanan yang ketat, melakukan pelatihan staf secara reguler, dan melakukan penilaian risiko berkala. Backup data yang aman dan rencana pemulihan bencana juga merupakan komponen penting dalam strategi manajemen risiko. Selain itu, kepatuhan terhadap regulasi privasi data seperti GDPR di Eropa atau HIPAA di AS adalah wajib. Tantangan dalam manajemen risiko termasuk ancaman keamanan siber yang terus berkembang, kebutuhan akan pembaruan sistem yang konstan, dan keseimbangan antara aksesibilitas data untuk perawatan pasien dengan perlindungan privasi.', 'foto', 'fotos/4IdBwtO371DBKqqhLpAmS7jMdCZbgG3HIU2Ci4Sf.jpg', NULL, '2024-08-28 05:24:03', '2024-08-28 05:24:03'),
+(4, 'Integrasi Kecerdasan Buatan dalam Analisis Rekam Medis Gigi: Potensi dan Tantangan', 'Integrasi kecerdasan buatan (AI) dalam analisis rekam medis gigi membuka peluang baru dalam diagnosis, perencanaan perawatan, dan penelitian. AI dapat menganalisis volume besar data pasien untuk mengidentifikasi pola, memprediksi risiko penyakit, dan bahkan merekomendasikan rencana perawatan. Misalnya, algoritma deep learning dapat digunakan untuk menganalisis radiografi gigi, membantu dalam deteksi dini karies atau penyakit periodontal. Sistem AI juga dapat membantu dalam manajemen praktik dengan mengoptimalkan penjadwalan dan mengidentifikasi tren dalam populasi pasien. Namun, integrasi AI juga menghadirkan tantangan signifikan. Keakuratan dan reliabilitas algoritma AI harus divalidasi secara ketat sebelum implementasi klinis. Isu etika, seperti tanggung jawab atas keputusan yang dibantu AI dan potensi bias dalam algoritma, harus diatasi. Selain itu, privasi data pasien dan kepatuhan terhadap regulasi kesehatan tetap menjadi perhatian utama. Diperlukan kolaborasi antara profesional gigi, ilmuwan data, dan pembuat kebijakan untuk mengembangkan kerangka kerja yang memungkinkan pemanfaatan AI secara aman dan etis dalam praktik gigi.', 'foto', 'fotos/he3KCiBEQuM1jkpskGRnFFCHL9pZryIqb7ZpXvJY.jpg', NULL, '2024-08-28 05:24:40', '2024-08-28 05:24:40'),
+(5, 'Medis Gigi dalam Kedokteran Gigi Forensik dan Identifikasi Korban Bencana', 'Rekam medis gigi memainkan peran vital dalam kedokteran gigi forensik dan identifikasi korban bencana. Gigi dan struktur mulut adalah sumber informasi identifikasi yang sangat berharga karena ketahanannya terhadap dekomposisi dan trauma. Rekam medis gigi yang akurat dan komprehensif dapat menjadi kunci dalam proses identifikasi, terutama dalam kasus di mana metode identifikasi lain tidak tersedia atau tidak dapat diandalkan. Dalam konteks forensik, rekam medis gigi mencakup tidak hanya catatan perawatan, tetapi juga radiografi, cetakan gigi, dan foto intraoral. Standardisasi format rekam medis gigi dan penggunaan notasi gigi universal seperti sistem FDI sangat penting untuk memfasilitasi proses identifikasi lintas batas. Dalam situasi bencana massal, database rekam medis gigi yang terdigitalisasi dapat mempercepat proses identifikasi korban. Namun, tantangan tetap ada, termasuk variasi dalam kualitas dan kelengkapan rekam medis antar praktik gigi, serta isu privasi terkait akses terhadap informasi medis pribadi untuk tujuan forensik. Pengembangan protokol yang jelas untuk penggunaan rekam medis gigi dalam konteks forensik, serta pelatihan khusus untuk profesional gigi dalam dokumentasi forensik, adalah langkah penting untuk meningkatkan efektivitas rekam medis gigi dalam identifikasi forensik.', 'foto', 'fotos/GqR6RYL9MpCDTjP9rZv0E7I6vfYOKIVPIsmlCpy0.jpg', NULL, '2024-08-28 05:25:19', '2024-08-28 05:25:19'),
+(6, 'Evolusi Rekam Medis Gigi: Dari Kertas ke Blockchain', 'Evolusi rekam medis gigi mencerminkan perkembangan teknologi dan perubahan kebutuhan dalam praktik kedokteran gigi. Dimulai dari sistem berbasis kertas yang sederhana, rekam medis gigi telah berkembang menjadi sistem digital yang canggih, dan kini bergerak menuju teknologi blockchain. Era kertas ditandai dengan catatan manual yang rawan kesalahan dan sulit diakses. Transisi ke sistem elektronik membawa peningkatan signifikan dalam aksesibilitas, keamanan, dan efisiensi. Sistem elektronik memungkinkan penyimpanan data yang lebih komprehensif, termasuk gambar digital dan rekaman video, serta memfasilitasi analisis data untuk meningkatkan perawatan pasien.\r\nSaat ini, teknologi blockchain menawarkan potensi revolusioner dalam manajemen rekam medis gigi. Blockchain menjanjikan tingkat keamanan dan integritas data yang belum pernah ada sebelumnya. Dengan sifatnya yang terdesentralisasi dan tidak dapat diubah, blockchain dapat mengatasi masalah kepercayaan dan keamanan yang melekat pada sistem terpusat. Ini memungkinkan pasien untuk memiliki kontrol lebih besar atas data kesehatan mereka, memfasilitasi berbagi data yang aman antar penyedia layanan kesehatan, dan meningkatkan transparansi dalam penelitian medis.\r\nNamun, adopsi blockchain dalam rekam medis gigi juga menghadapi tantangan signifikan. Ini termasuk masalah skalabilitas, konsumsi energi yang tinggi, kompleksitas teknis, dan kebutuhan untuk mengintegrasikan dengan sistem yang ada.', 'foto', 'fotos/8Mu9C2XYEjSBvgytwNn6IsfItM95a93sTQjKDVYr.jpg', NULL, '2024-08-28 05:26:23', '2024-08-28 05:26:23'),
+(11, 'Pentingnya Rekam Medis Gigi Anak', 'Rekam medis gigi anak adalah dokumen penting yang mencatat riwayat kesehatan gigi dan mulut anak dari waktu ke waktu. Dokumen ini membantu dokter gigi dalam memberikan perawatan yang tepat dan konsisten, serta memantau perkembangan kesehatan gigi anak secara komprehensif.', 'foto', 'fotos/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', NULL, '2024-08-28 03:00:00', '2024-08-28 03:00:00'),
+(12, 'Komponen Utama Rekam Medis Gigi Anak', 'Rekam medis gigi anak terdiri dari beberapa komponen penting, termasuk data pribadi, riwayat kesehatan umum, riwayat kesehatan gigi, hasil pemeriksaan, diagnosis, rencana perawatan, dan catatan tindakan yang telah dilakukan. Semua informasi ini membantu dalam memberikan perawatan yang holistik dan berkelanjutan.', 'foto', 'fotos/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', NULL, '2024-08-28 03:15:00', '2024-08-28 03:15:00'),
+(13, 'Manfaat Rekam Medis Gigi Digital untuk Anak', 'Rekam medis gigi digital menawarkan berbagai keuntungan dalam perawatan gigi anak. Sistem ini memungkinkan akses cepat ke informasi pasien, memudahkan kolaborasi antar dokter gigi, meningkatkan akurasi diagnosis, dan membantu dalam edukasi pasien dan orang tua melalui visualisasi yang lebih baik.', 'foto', 'fotos/4IdBwtO371DBKqqhLpAmS7jMdCZbgG3HIU2Ci4Sf.jpg', NULL, '2024-08-28 03:30:00', '2024-08-28 03:30:00'),
+(14, 'Peran Orang Tua dalam Rekam Medis Gigi Anak', 'Orang tua memiliki peran penting dalam memastikan rekam medis gigi anak mereka akurat dan lengkap. Mereka harus memberikan informasi yang tepat tentang riwayat kesehatan anak, melaporkan perubahan kondisi kesehatan, dan memahami pentingnya kunjungan rutin ke dokter gigi untuk pembaruan rekam medis.', 'foto', 'fotos/he3KCiBEQuM1jkpskGRnFFCHL9pZryIqb7ZpXvJY.jpg', NULL, '2024-08-28 03:45:00', '2024-08-28 03:45:00'),
+(15, 'Privasi dan Keamanan Rekam Medis Gigi Anak', 'Menjaga privasi dan keamanan rekam medis gigi anak sangat penting. Dokter gigi dan staf klinik harus mengikuti protokol ketat untuk melindungi informasi sensitif pasien, termasuk penggunaan sistem keamanan digital, pembatasan akses, dan pelatihan staf tentang pentingnya kerahasiaan data pasien.', 'foto', 'fotos/GqR6RYL9MpCDTjP9rZv0E7I6vfYOKIVPIsmlCpy0.jpg', NULL, '2024-08-28 04:00:00', '2024-08-28 04:00:00'),
+(16, 'Perkembangan Gigi Anak dalam Rekam Medis', 'Rekam medis gigi anak mencatat perkembangan gigi dari waktu ke waktu, termasuk pertumbuhan gigi susu, proses pergantian gigi, dan munculnya gigi permanen. Informasi ini membantu dokter gigi dalam memantau perkembangan normal dan mendeteksi potensi masalah sejak dini.', 'foto', 'fotos/8Mu9C2XYEjSBvgytwNn6IsfItM95a93sTQjKDVYr.jpg', NULL, '2024-08-28 04:15:00', '2024-08-28 04:15:00'),
+(17, 'Pencatatan Prosedur Perawatan Gigi Anak', 'Dalam rekam medis gigi anak, setiap prosedur perawatan harus dicatat dengan detail. Ini termasuk tindakan preventif seperti aplikasi fluoride dan sealant, serta tindakan kuratif seperti penambalan gigi atau pencabutan. Pencatatan yang akurat membantu dalam perencanaan perawatan jangka panjang.', 'video_upload', 'videos/eKI4yGoBcAUAgPreH5hhlVoszWfLEziVct5sWKLG.mp4', NULL, '2024-08-28 04:30:00', '2024-08-28 04:30:00'),
+(18, 'Penggunaan Teknologi Imaging dalam Rekam Medis Gigi Anak', 'Teknologi imaging seperti radiografi digital dan fotografi intraoral merupakan bagian penting dari rekam medis gigi anak modern. Gambar-gambar ini membantu dalam diagnosis yang lebih akurat, perencanaan perawatan yang lebih baik, dan memudahkan komunikasi dengan orang tua tentang kondisi gigi anak mereka.', 'video_upload', 'videos/njlsLUl55sTpOKr9BhkugyVkBCTyo8HxJ1sKnBhw.mp4', NULL, '2024-08-28 04:45:00', '2024-08-28 04:45:00'),
+(19, 'Integrasi Rekam Medis Gigi Anak dengan Kesehatan Umum', 'Rekam medis gigi anak yang komprehensif harus terintegrasi dengan informasi kesehatan umum anak. Hal ini penting karena kondisi kesehatan umum dapat mempengaruhi kesehatan gigi dan sebaliknya. Integrasi ini memungkinkan pendekatan perawatan yang lebih holistik dan personalisasi.', 'foto', 'fotos/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', NULL, '2024-08-28 05:00:00', '2024-08-28 05:00:00'),
+(20, 'Edukasi Anak dan Orang Tua Melalui Rekam Medis Gigi', 'Rekam medis gigi dapat menjadi alat edukasi yang efektif bagi anak dan orang tua. Dengan menunjukkan perubahan kondisi gigi dari waktu ke waktu, dokter gigi dapat menjelaskan pentingnya perawatan gigi yang baik dan memotivasi anak untuk menjaga kesehatan gigi dan mulut mereka.', 'foto', 'fotos/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', NULL, '2024-08-28 05:15:00', '2024-08-28 05:15:00'),
+(21, 'Perkembangan Gigi Susu dalam Rekam Medis Anak', 'Rekam medis gigi anak mencatat detail penting tentang perkembangan gigi susu, termasuk waktu erupsi, urutan pertumbuhan, dan kondisi gigi susu. Informasi ini membantu dokter gigi memantau perkembangan normal dan mengidentifikasi potensi masalah sejak dini, memastikan kesehatan gigi anak yang optimal.', 'foto', 'fotos/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', NULL, '2024-08-28 06:00:00', '2024-08-28 06:00:00'),
+(22, 'Pencatatan Kebiasaan Oral pada Rekam Medis Gigi Anak', 'Kebiasaan oral seperti menghisap jempol, penggunaan dot, atau bruxism (menggerinding gigi) penting untuk dicatat dalam rekam medis gigi anak. Informasi ini membantu dokter gigi dalam menilai risiko masalah oklusi dan merencanakan intervensi dini jika diperlukan.', 'foto', 'fotos/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', NULL, '2024-08-28 06:15:00', '2024-08-28 06:15:00'),
+(23, 'Monitoring Pertumbuhan Rahang dalam Rekam Medis Anak', 'Rekam medis gigi anak juga mencakup pemantauan pertumbuhan rahang. Dokter gigi mencatat perkembangan rahang atas dan bawah, yang penting untuk mendeteksi potensi masalah ortodontik sejak dini dan merencanakan perawatan yang tepat waktu.', 'foto', 'fotos/4IdBwtO371DBKqqhLpAmS7jMdCZbgG3HIU2Ci4Sf.jpg', NULL, '2024-08-28 06:30:00', '2024-08-28 06:30:00'),
+(24, 'Pencatatan Riwayat Trauma Gigi pada Anak', 'Trauma gigi pada anak, seperti gigi yang terbentur atau patah, harus dicatat dengan detail dalam rekam medis. Informasi ini penting untuk perawatan jangka panjang dan dapat mempengaruhi keputusan perawatan di masa depan.', 'foto', 'fotos/he3KCiBEQuM1jkpskGRnFFCHL9pZryIqb7ZpXvJY.jpg', NULL, '2024-08-28 06:45:00', '2024-08-28 06:45:00'),
+(25, 'Penggunaan Kode Diagnosis dalam Rekam Medis Gigi Anak', 'Rekam medis gigi anak modern menggunakan sistem koding diagnosis standar. Ini membantu dalam komunikasi antar profesional kesehatan, memudahkan klaim asuransi, dan memungkinkan analisis data untuk penelitian dan peningkatan kualitas perawatan.', 'foto', 'fotos/GqR6RYL9MpCDTjP9rZv0E7I6vfYOKIVPIsmlCpy0.jpg', NULL, '2024-08-28 07:00:00', '2024-08-28 07:00:00'),
+(26, 'Pencatatan Pola Makan dan Kebiasaan Higienis dalam Rekam Medis Anak', 'Informasi tentang pola makan anak dan kebiasaan higiene oral dicatat dalam rekam medis gigi. Data ini membantu dokter gigi dalam memberikan saran pencegahan yang disesuaikan dan mengidentifikasi faktor risiko karies gigi.', 'foto', 'fotos/8Mu9C2XYEjSBvgytwNn6IsfItM95a93sTQjKDVYr.jpg', NULL, '2024-08-28 07:15:00', '2024-08-28 07:15:00'),
+(27, 'Dokumentasi Foto dalam Rekam Medis Gigi Anak', 'Foto intraoral dan ekstraoral merupakan bagian penting dari rekam medis gigi anak. Dokumentasi visual ini membantu dalam melacak perubahan visual dari waktu ke waktu, merencanakan perawatan estetik, dan berkomunikasi dengan orang tua tentang kondisi gigi anak mereka.', 'video_upload', 'videos/eKI4yGoBcAUAgPreH5hhlVoszWfLEziVct5sWKLG.mp4', NULL, '2024-08-28 07:30:00', '2024-08-28 07:30:00'),
+(28, 'Pencatatan Riwayat Fluoride dalam Rekam Medis Gigi Anak', 'Rekam medis gigi anak harus mencakup riwayat lengkap paparan fluoride, termasuk penggunaan pasta gigi berfluoride, suplemen fluoride, dan aplikasi fluoride topikal di klinik. Informasi ini penting untuk menilai risiko karies dan merencanakan perawatan preventif.', 'video_upload', 'videos/njlsLUl55sTpOKr9BhkugyVkBCTyo8HxJ1sKnBhw.mp4', NULL, '2024-08-28 07:45:00', '2024-08-28 07:45:00'),
+(29, 'Integrasi Rekam Medis Gigi Anak dengan Sistem Elektronik', 'Integrasi rekam medis gigi anak ke dalam sistem rekam medis elektronik yang lebih luas memungkinkan perawatan yang lebih terkoordinasi. Ini memfasilitasi berbagi informasi antara dokter gigi anak, dokter anak, dan spesialis lain, meningkatkan kualitas perawatan secara keseluruhan.', 'foto', 'fotos/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', NULL, '2024-08-28 08:00:00', '2024-08-28 08:00:00'),
+(30, 'Penggunaan AI dalam Analisis Rekam Medis Gigi Anak', 'Teknologi kecerdasan buatan (AI) mulai digunakan dalam analisis rekam medis gigi anak. AI dapat membantu dalam deteksi dini anomali gigi, prediksi perkembangan oklusi, dan personalisasi rencana perawatan berdasarkan pola yang teridentifikasi dari data rekam medis.', 'foto', 'fotos/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', NULL, '2024-08-28 08:15:00', '2024-08-28 08:15:00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `icds`
+--
+
+CREATE TABLE `icds` (
+  `code` varchar(255) NOT NULL,
+  `name_id` varchar(255) DEFAULT NULL,
+  `name_en` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `icds`
+--
+
+INSERT INTO `icds` (`code`, `name_id`, `name_en`, `created_at`, `updated_at`) VALUES
+('K02.0', 'Karies email', 'Dental caries limited to enamel', '2024-08-28 02:00:00', '2024-08-28 02:00:00'),
+('K02.1', 'Karies dentin', 'Dental caries of dentine', '2024-08-28 02:05:00', '2024-08-28 02:05:00'),
+('K02.2', 'Karies sementum', 'Dental caries of cementum', '2024-08-28 02:10:00', '2024-08-28 02:10:00'),
+('K02.3', 'Karies gigi yang terhenti', 'Arrested dental caries', '2024-08-28 02:15:00', '2024-08-28 02:15:00'),
+('K02.9', 'Karies gigi, tidak spesifik', 'Dental caries, unspecified', '2024-08-28 02:20:00', '2024-08-28 02:20:00'),
+('K03.0', 'Atrisi gigi yang berlebihan', 'Excessive attrition of teeth', '2024-08-28 02:25:00', '2024-08-28 02:25:00'),
+('K03.1', 'Abrasi gigi', 'Abrasion of teeth', '2024-08-28 02:30:00', '2024-08-28 02:30:00'),
+('K03.2', 'Erosi gigi', 'Erosion of teeth', '2024-08-28 02:35:00', '2024-08-28 02:35:00'),
+('K03.3', 'Resorpsi patologis gigi', 'Pathological resorption of teeth', '2024-08-28 02:40:00', '2024-08-28 02:40:00'),
+('K03.4', 'Hipersementosis', 'Hypercementosis', '2024-08-28 02:45:00', '2024-08-28 02:45:00'),
+('K03.5', 'Ankilosis gigi', 'Ankylosis of teeth', '2024-08-28 02:50:00', '2024-08-28 02:50:00'),
+('K03.6', 'Deposit [akrasi] pada gigi', 'Deposits [accretions] on teeth', '2024-08-28 02:55:00', '2024-08-28 02:55:00'),
+('K03.7', 'Perubahan warna keras jaringan gigi pasca-erupsi', 'Posteruptive colour changes of dental hard tissues', '2024-08-28 03:00:00', '2024-08-28 03:00:00'),
+('K03.8', 'Gangguan lain pada jaringan keras gigi', 'Other specified diseases of hard tissues of teeth', '2024-08-28 03:05:00', '2024-08-28 03:05:00'),
+('K03.9', 'Penyakit jaringan keras gigi, tidak spesifik', 'Disease of hard tissues of teeth, unspecified', '2024-08-28 03:10:00', '2024-08-28 03:10:00'),
+('K04.0', 'Pulpitis', 'Pulpitis', '2024-08-28 03:15:00', '2024-08-28 03:15:00'),
+('K04.1', 'Nekrosis pulpa', 'Necrosis of pulp', '2024-08-28 03:20:00', '2024-08-28 03:20:00'),
+('K04.2', 'Degenerasi pulpa', 'Pulp degeneration', '2024-08-28 03:25:00', '2024-08-28 03:25:00'),
+('K04.3', 'Pembentukan jaringan keras abnormal dalam pulpa', 'Abnormal hard tissue formation in pulp', '2024-08-28 03:30:00', '2024-08-28 03:30:00'),
+('K04.4', 'Periodontitis apikal akut asal pulpa', 'Acute apical periodontitis of pulpal origin', '2024-08-28 03:35:00', '2024-08-28 03:35:00'),
+('K04.5', 'Periodontitis apikal kronis', 'Chronic apical periodontitis', '2024-08-28 03:40:00', '2024-08-28 03:40:00'),
+('K04.6', 'Abses periapikal dengan sinus', 'Periapical abscess with sinus', '2024-08-28 03:45:00', '2024-08-28 03:45:00'),
+('K04.7', 'Abses periapikal tanpa sinus', 'Periapical abscess without sinus', '2024-08-28 03:50:00', '2024-08-28 03:50:00'),
+('K04.8', 'Kista radikular', 'Radicular cyst', '2024-08-28 03:55:00', '2024-08-28 03:55:00'),
+('K04.9', 'Penyakit pulpa dan jaringan periapikal lainnya', 'Other and unspecified diseases of pulp and periapical tissues', '2024-08-28 04:00:00', '2024-08-28 04:00:00'),
+('K05.0', 'Gingivitis akut', 'Acute gingivitis', '2024-08-28 04:05:00', '2024-08-28 04:05:00'),
+('K05.1', 'Gingivitis kronis', 'Chronic gingivitis', '2024-08-28 04:10:00', '2024-08-28 04:10:00'),
+('K05.2', 'Periodontitis akut', 'Acute periodontitis', '2024-08-28 04:15:00', '2024-08-28 04:15:00'),
+('K05.3', 'Periodontitis kronis', 'Chronic periodontitis', '2024-08-28 04:20:00', '2024-08-28 04:20:00'),
+('K05.4', 'Periodontosis', 'Periodontosis', '2024-08-28 04:25:00', '2024-08-28 04:25:00'),
+('K05.5', 'Penyakit periodontal lainnya', 'Other periodontal diseases', '2024-08-28 04:30:00', '2024-08-28 04:30:00'),
+('K05.6', 'Penyakit periodontal, tidak spesifik', 'Periodontal disease, unspecified', '2024-08-28 04:35:00', '2024-08-28 04:35:00'),
+('K06.0', 'Resesi gingiva', 'Gingival recession', '2024-08-28 04:40:00', '2024-08-28 04:40:00'),
+('K06.1', 'Pembesaran gingiva', 'Gingival enlargement', '2024-08-28 04:45:00', '2024-08-28 04:45:00'),
+('K06.2', 'Lesi gingiva dan ridge edentulous terkait trauma', 'Gingival and edentulous alveolar ridge lesions associated with trauma', '2024-08-28 04:50:00', '2024-08-28 04:50:00'),
+('K06.8', 'Gangguan gingiva dan ridge alveolar edentulous lainnya', 'Other specified disorders of gingiva and edentulous alveolar ridge', '2024-08-28 04:55:00', '2024-08-28 04:55:00'),
+('K06.9', 'Gangguan gingiva dan ridge alveolar edentulous, tidak spesifik', 'Disorder of gingiva and edentulous alveolar ridge, unspecified', '2024-08-28 05:00:00', '2024-08-28 05:00:00'),
+('K07.0', 'Anomali besar rahang utama', 'Major anomalies of jaw size', '2024-08-28 05:05:00', '2024-08-28 05:05:00'),
+('K07.1', 'Anomali hubungan rahang-dasar tengkorak', 'Anomalies of jaw-cranial base relationship', '2024-08-28 05:10:00', '2024-08-28 05:10:00'),
+('K07.2', 'Anomali hubungan lengkung gigi', 'Anomalies of dental arch relationship', '2024-08-28 05:15:00', '2024-08-28 05:15:00'),
+('K07.3', 'Anomali posisi gigi', 'Anomalies of tooth position', '2024-08-28 05:20:00', '2024-08-28 05:20:00'),
+('K07.4', 'Maloklusi, tidak spesifik', 'Malocclusion, unspecified', '2024-08-28 05:25:00', '2024-08-28 05:25:00'),
+('K07.5', 'Abnormalitas dentofasial fungsional', 'Dentofacial functional abnormalities', '2024-08-28 05:30:00', '2024-08-28 05:30:00'),
+('K07.6', 'Gangguan sendi temporomandibular', 'Temporomandibular joint disorders', '2024-08-28 05:35:00', '2024-08-28 05:35:00'),
+('K08.0', 'Eksfoliasi gigi karena penyebab sistemik', 'Exfoliation of teeth due to systemic causes', '2024-08-28 05:40:00', '2024-08-28 05:40:00'),
+('K08.1', 'Hilangnya gigi karena kecelakaan, ekstraksi atau penyakit periodontal lokal', 'Loss of teeth due to accident, extraction or local periodontal disease', '2024-08-28 05:45:00', '2024-08-28 05:45:00'),
+('K08.2', 'Atrofi ridge alveolar edentulous', 'Atrophy of edentulous alveolar ridge', '2024-08-28 05:50:00', '2024-08-28 05:50:00'),
+('K08.3', 'Akar gigi yang tertinggal', 'Retained dental root', '2024-08-28 05:55:00', '2024-08-28 05:55:00'),
+('K08.8', 'Gangguan lain pada gigi dan struktur pendukung', 'Other specified disorders of teeth and supporting structures', '2024-08-28 06:00:00', '2024-08-28 06:00:00'),
+('K08.9', 'Gangguan gigi dan struktur pendukung, tidak spesifik', 'Disorder of teeth and supporting structures, unspecified', '2024-08-28 06:05:00', '2024-08-28 06:05:00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `jawaban_pasien`
+--
+
+CREATE TABLE `jawaban_pasien` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `pasien_id` bigint(20) UNSIGNED NOT NULL,
+  `pertanyaan_id` bigint(20) UNSIGNED NOT NULL,
+  `opsi_jawaban_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `jawaban_pasien`
+--
+
+INSERT INTO `jawaban_pasien` (`id`, `pasien_id`, `pertanyaan_id`, `opsi_jawaban_id`, `keterangan`, `created_at`, `updated_at`) VALUES
+(302, 2, 1, 6, 'Sering sakit hati', '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(303, 2, 2, 9, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(304, 2, 3, 16, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(305, 2, 4, 22, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(306, 2, 5, 26, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(307, 2, 6, 30, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(308, 2, 7, 33, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(309, 2, 8, 39, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(310, 2, 9, 43, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(311, 2, 10, 46, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(312, 2, 11, 47, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(313, 2, 12, 49, 'Suka Iri Dengki', '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(314, 2, 13, 52, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(315, 2, 14, 54, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(316, 2, 15, 55, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(317, 2, 16, 58, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(318, 2, 17, 60, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(319, 2, 18, 61, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(320, 2, 19, 64, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(321, 2, 20, 66, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(322, 2, 21, 68, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(323, 2, 22, 70, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(324, 2, 23, 72, 'Banyak Maunya', '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(325, 2, 24, 74, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(326, 2, 25, 76, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(327, 2, 26, 78, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(328, 2, 27, 80, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(329, 2, 28, 82, NULL, '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(330, 2, 29, 84, 'Tidak Suka Bergaya', '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(331, 2, 30, 86, 'Tapi Menghabiskan Uang Orangtua', '2024-08-28 03:40:10', '2024-08-28 03:40:10'),
+(332, 3, 1, 7, 'kepo amat bang', '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(333, 3, 2, 13, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(334, 3, 3, 17, 'kepo lo', '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(335, 3, 4, 23, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(336, 3, 5, 26, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(337, 3, 6, 30, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(338, 3, 7, 32, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(339, 3, 8, 38, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(340, 3, 9, 44, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(341, 3, 10, 46, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(342, 3, 11, 47, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(343, 3, 12, 50, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(344, 3, 13, 52, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(345, 3, 14, 53, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(346, 3, 15, 56, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(347, 3, 16, 57, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(348, 3, 17, 60, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(349, 3, 18, 62, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(350, 3, 19, 64, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(351, 3, 20, 66, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(352, 3, 21, 68, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(353, 3, 22, 69, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(354, 3, 23, 71, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(355, 3, 24, 73, 'Habis banyak', '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(356, 3, 25, 75, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(357, 3, 26, 77, 'Jelas, Laki kok gak merokok', '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(358, 3, 27, 80, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(359, 3, 28, 81, 'Jelas orang tua kok', '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(360, 3, 29, 84, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(361, 3, 30, 85, NULL, '2024-08-28 04:05:34', '2024-08-28 04:05:34'),
+(362, 4, 1, 1, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(363, 4, 2, 8, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(364, 4, 3, 17, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(365, 4, 4, 20, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(366, 4, 5, 24, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(367, 4, 6, 28, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(368, 4, 7, 32, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(369, 4, 8, 38, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(370, 4, 9, 43, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(371, 4, 10, 45, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(372, 4, 11, 47, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(373, 4, 12, 49, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(374, 4, 13, 51, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(375, 4, 14, 53, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(376, 4, 15, 55, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(377, 4, 16, 58, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(378, 4, 17, 60, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(379, 4, 18, 62, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(380, 4, 19, 63, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(381, 4, 20, 65, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(382, 4, 21, 68, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(383, 4, 22, 69, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(384, 4, 23, 71, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(385, 4, 24, 73, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(386, 4, 25, 76, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(387, 4, 26, 78, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(388, 4, 27, 79, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(389, 4, 28, 82, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(390, 4, 29, 83, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13'),
+(391, 4, 30, 86, NULL, '2024-08-28 13:18:13', '2024-08-28 13:18:13');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `kategori_pertanyaan`
+--
+
+CREATE TABLE `kategori_pertanyaan` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama_kategori` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `kategori_pertanyaan`
+--
+
+INSERT INTO `kategori_pertanyaan` (`id`, `nama_kategori`, `created_at`, `updated_at`) VALUES
+(1, 'Keluhan Utama', '2024-08-18 09:38:35', '2024-08-18 09:38:35'),
+(2, 'Riwayat Kesehatan Umum', '2024-08-18 09:49:09', '2024-08-18 09:59:07'),
+(3, 'Riwayat Kesehatan Gigi', '2024-08-18 09:54:42', '2024-08-18 09:54:42');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `kondisi_gigi`
+--
+
+CREATE TABLE `kondisi_gigi` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kode` varchar(255) NOT NULL,
+  `nama` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `kondisi_gigi`
+--
+
+INSERT INTO `kondisi_gigi` (`id`, `kode`, `nama`, `created_at`, `updated_at`) VALUES
+(1, '_', 'Gigi belum erupsi', NULL, NULL),
+(2, '∑', 'Gigi sudah di cabut/ tanggal', NULL, NULL),
+(3, 'Ο', 'Gigi goyah', NULL, NULL),
+(4, 'X', 'Gigi tinggal akar', NULL, NULL),
+(5, 'V', 'Karies', NULL, NULL),
+(6, '⚫', 'Tumpatan', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2014_10_12_000000_create_users_table', 1),
+(2, '2014_10_12_100000_create_password_resets_table', 1),
+(3, '2019_08_19_000000_create_failed_jobs_table', 1),
+(4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(5, '2023_05_13_033136_create_pasien_table', 1),
+(6, '2023_05_13_033149_create_dokter_table', 1),
+(7, '2023_05_13_033209_create_obat_table', 1),
+(8, '2023_05_13_033252_create_rekam_table', 1),
+(9, '2023_05_18_235916_create_pengeluaran_obat_table', 1),
+(10, '2023_05_19_233941_create_notifications_table', 1),
+(11, '2023_05_20_133306_create_rekam_gigi_table', 1),
+(12, '2023_05_20_163802_create_tindakan_table', 1),
+(13, '2023_05_21_141004_create_kondisi_gigi_table', 1),
+(14, '2023_05_21_141055_create_icds_table', 1),
+(15, '2023_07_13_101007_create_rekam_diagnosa_table', 1),
+(16, '2024_08_16_161038_create_kategori_pertanyaan_table', 1),
+(17, '2024_08_16_161210_create_pertanyaan_table', 1),
+(18, '2024_08_16_161303_create_opsi_jawaban_table', 1),
+(19, '2024_08_16_161328_create_jawaban_pasien_table', 1),
+(20, '2024_08_19_015204_create_edukasi_table', 1),
+(21, '2024_08_19_171431_create_toga_table', 1),
+(22, '2024_08_23_003704_create_namakondisigigi_table', 1),
+(23, '2024_08_23_003731_create_rekammediskader_table', 1),
+(24, '2024_08_27_071642_create_cache_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `namakondisigigi`
+--
+
+CREATE TABLE `namakondisigigi` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama_kondisi` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `namakondisigigi`
+--
+
+INSERT INTO `namakondisigigi` (`id`, `nama_kondisi`, `created_at`, `updated_at`) VALUES
+(1, 'Gigi Lubang', '2024-08-28 02:54:17', '2024-08-28 02:54:17'),
+(3, 'Gigi Hilariawan', '2024-08-28 02:54:41', '2024-08-28 02:54:41'),
+(4, 'Karang', '2024-08-28 02:54:51', '2024-08-28 02:54:51'),
+(5, 'Radang Gusi', '2024-08-28 02:55:03', '2024-08-28 02:55:03');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` char(36) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `notifiable_type` varchar(255) NOT NULL,
+  `notifiable_id` bigint(20) UNSIGNED NOT NULL,
+  `data` text NOT NULL,
+  `read_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `obat`
+--
+
+CREATE TABLE `obat` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kd_obat` varchar(255) DEFAULT NULL,
+  `nama` varchar(255) NOT NULL,
+  `satuan` varchar(255) NOT NULL,
+  `stok` int(11) NOT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `harga` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `opsi_jawaban`
+--
+
+CREATE TABLE `opsi_jawaban` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `pertanyaan_id` bigint(20) UNSIGNED NOT NULL,
+  `teks_opsi` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `opsi_jawaban`
+--
+
+INSERT INTO `opsi_jawaban` (`id`, `pertanyaan_id`, `teks_opsi`, `created_at`, `updated_at`) VALUES
+(1, 1, 'gigi', '2024-08-18 09:38:58', '2024-08-18 09:38:58'),
+(2, 1, 'gusi', '2024-08-18 09:39:04', '2024-08-18 09:39:04'),
+(3, 1, 'pipi', '2024-08-18 09:39:11', '2024-08-18 09:39:11'),
+(4, 1, 'bibir', '2024-08-18 09:39:17', '2024-08-18 09:39:17'),
+(5, 1, 'lidah', '2024-08-18 09:39:23', '2024-08-18 09:39:23'),
+(6, 1, 'langit langit', '2024-08-18 09:39:59', '2024-08-18 09:39:59'),
+(7, 1, 'lain lain', '2024-08-18 09:40:06', '2024-08-18 09:40:06'),
+(8, 2, 'depan', '2024-08-18 09:40:28', '2024-08-18 09:40:28'),
+(9, 2, 'belakang', '2024-08-18 09:40:38', '2024-08-18 09:40:38'),
+(10, 2, 'kiri', '2024-08-18 09:40:46', '2024-08-18 09:40:46'),
+(11, 2, 'kanan', '2024-08-18 09:40:52', '2024-08-18 09:40:52'),
+(12, 2, 'atas', '2024-08-18 09:40:58', '2024-08-18 09:40:58'),
+(13, 2, 'bawah', '2024-08-18 09:41:04', '2024-08-18 09:41:04'),
+(14, 2, 'lain-lain', '2024-08-18 09:41:14', '2024-08-18 09:41:14'),
+(15, 3, 'gatal', '2024-08-18 09:41:39', '2024-08-18 09:41:39'),
+(16, 3, 'linu', '2024-08-18 09:41:48', '2024-08-18 09:41:48'),
+(17, 3, 'sakit/nyeri', '2024-08-18 09:42:00', '2024-08-18 09:42:00'),
+(18, 3, 'berdarah', '2024-08-18 09:42:23', '2024-08-18 09:42:23'),
+(19, 3, 'lain lain', '2024-08-18 09:42:31', '2024-08-18 09:42:31'),
+(20, 4, 'kadang-kadang', '2024-08-18 09:43:06', '2024-08-18 09:43:06'),
+(21, 4, 'terus menerus', '2024-08-18 09:43:21', '2024-08-18 09:43:21'),
+(22, 4, 'spontan', '2024-08-18 09:43:30', '2024-08-18 09:43:30'),
+(23, 4, 'lain-lain', '2024-08-18 09:43:38', '2024-08-18 09:43:38'),
+(24, 5, 'Dipakai Mengunyah', '2024-08-18 09:44:08', '2024-08-18 09:44:08'),
+(25, 5, 'kemasukan sisa makanan', '2024-08-18 09:44:21', '2024-08-18 09:44:21'),
+(26, 5, 'kena rangsangan dingin', '2024-08-18 09:44:32', '2024-08-18 09:44:32'),
+(27, 5, 'lain lain', '2024-08-18 09:44:40', '2024-08-18 09:44:40'),
+(28, 6, 'hari', '2024-08-18 09:45:37', '2024-08-18 09:45:37'),
+(29, 6, 'minggu', '2024-08-18 09:45:44', '2024-08-18 09:45:44'),
+(30, 6, 'bulan', '2024-08-18 09:45:54', '2024-08-18 09:45:54'),
+(31, 6, 'tahun lalu', '2024-08-18 09:46:02', '2024-08-18 09:46:02'),
+(32, 7, 'sekarang', '2024-08-18 09:46:23', '2024-08-18 09:46:23'),
+(33, 7, 'hari', '2024-08-18 09:46:32', '2024-08-18 09:46:32'),
+(34, 7, 'minggu', '2024-08-18 09:46:40', '2024-08-18 09:46:40'),
+(35, 7, 'bulan yang lalu', '2024-08-18 09:46:52', '2024-08-18 09:46:52'),
+(36, 7, 'sekarang tidak sakit', '2024-08-18 09:47:03', '2024-08-18 09:47:03'),
+(37, 8, 'rawat', '2024-08-18 09:47:22', '2024-08-18 09:47:22'),
+(38, 8, 'tambal', '2024-08-18 09:47:28', '2024-08-18 09:47:28'),
+(39, 8, 'cabut', '2024-08-18 09:47:35', '2024-08-18 09:47:35'),
+(40, 8, 'rujuk', '2024-08-18 09:47:43', '2024-08-18 09:47:43'),
+(41, 8, 'konsul', '2024-08-18 09:47:50', '2024-08-18 09:47:50'),
+(42, 8, 'lain lain', '2024-08-18 09:47:56', '2024-08-18 09:47:56'),
+(43, 9, 'YA', '2024-08-18 09:49:30', '2024-08-18 09:49:30'),
+(44, 9, 'TIDAK', '2024-08-18 09:49:39', '2024-08-18 09:49:39'),
+(45, 10, 'YA', '2024-08-18 09:50:03', '2024-08-18 09:50:03'),
+(46, 10, 'TIDAK', '2024-08-18 09:50:09', '2024-08-18 09:50:09'),
+(47, 11, 'YA', '2024-08-18 09:50:55', '2024-08-18 09:50:55'),
+(48, 11, 'TIDAK', '2024-08-18 09:51:00', '2024-08-18 09:51:00'),
+(49, 12, 'YA', '2024-08-18 09:51:45', '2024-08-18 09:51:45'),
+(50, 12, 'TIDAK', '2024-08-18 09:51:50', '2024-08-18 09:51:50'),
+(51, 13, 'YA', '2024-08-18 09:52:15', '2024-08-18 09:52:15'),
+(52, 13, 'TIDAK', '2024-08-18 09:52:20', '2024-08-18 09:52:20'),
+(53, 14, 'YA', '2024-08-18 09:52:42', '2024-08-18 09:52:42'),
+(54, 14, 'TIDAK', '2024-08-18 09:52:46', '2024-08-18 09:52:46'),
+(55, 15, 'YA', '2024-08-18 09:53:06', '2024-08-18 09:53:06'),
+(56, 15, 'TIDAK', '2024-08-18 09:53:11', '2024-08-18 09:53:11'),
+(57, 16, 'YA', '2024-08-18 09:55:04', '2024-08-18 09:55:04'),
+(58, 16, 'TIDAK', '2024-08-18 09:55:08', '2024-08-18 09:55:08'),
+(59, 17, 'YA', '2024-08-18 09:55:29', '2024-08-18 09:55:29'),
+(60, 17, 'TIDAK', '2024-08-18 09:55:33', '2024-08-18 09:55:33'),
+(61, 18, 'YA', '2024-08-18 09:55:55', '2024-08-18 09:55:55'),
+(62, 18, 'TIDAK', '2024-08-18 09:55:59', '2024-08-18 09:55:59'),
+(63, 19, 'YA', '2024-08-18 09:56:17', '2024-08-18 09:56:17'),
+(64, 19, 'TIDAK', '2024-08-18 09:56:21', '2024-08-18 09:56:21'),
+(65, 20, 'YA', '2024-08-18 09:56:54', '2024-08-18 09:56:54'),
+(66, 20, 'TIDAK', '2024-08-18 09:56:57', '2024-08-18 09:56:57'),
+(67, 21, 'YA', '2024-08-18 09:57:38', '2024-08-18 09:57:38'),
+(68, 21, 'TIDAK', '2024-08-18 09:57:42', '2024-08-18 09:57:42'),
+(69, 22, 'YA', '2024-08-18 09:58:05', '2024-08-18 09:58:05'),
+(70, 22, 'TIDAK', '2024-08-18 09:58:09', '2024-08-18 09:58:09'),
+(71, 23, 'YA', '2024-08-18 09:59:52', '2024-08-18 09:59:52'),
+(72, 23, 'TIDAK', '2024-08-18 09:59:56', '2024-08-18 09:59:56'),
+(73, 24, 'YA', '2024-08-18 10:00:16', '2024-08-18 10:00:16'),
+(74, 24, 'TIDAK', '2024-08-18 10:00:21', '2024-08-18 10:00:21'),
+(75, 25, 'YA', '2024-08-18 10:01:23', '2024-08-18 10:01:23'),
+(76, 25, 'TIDAK', '2024-08-18 10:01:27', '2024-08-18 10:01:27'),
+(77, 26, 'YA', '2024-08-18 10:01:55', '2024-08-18 10:01:55'),
+(78, 26, 'TIDAK', '2024-08-18 10:01:59', '2024-08-18 10:01:59'),
+(79, 27, 'YA', '2024-08-18 10:02:20', '2024-08-18 10:02:20'),
+(80, 27, 'TIDAK', '2024-08-18 10:02:47', '2024-08-18 10:02:47'),
+(81, 28, 'YA', '2024-08-18 10:03:04', '2024-08-18 10:03:04'),
+(82, 28, 'TIDAK', '2024-08-18 10:03:09', '2024-08-18 10:03:09'),
+(83, 29, 'YA', '2024-08-18 10:07:28', '2024-08-18 10:07:28'),
+(84, 29, 'TIDAK', '2024-08-18 10:07:34', '2024-08-18 10:07:34'),
+(85, 30, 'YA', '2024-08-18 10:08:09', '2024-08-18 10:08:09'),
+(86, 30, 'TIDAK', '2024-08-18 10:08:16', '2024-08-18 10:08:16');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pasien`
+--
+
+CREATE TABLE `pasien` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `tmp_lahir` varchar(255) DEFAULT NULL,
+  `tgl_lahir` date DEFAULT NULL,
+  `jk` enum('Laki-Laki','Perempuan') DEFAULT NULL,
+  `alamat_lengkap` longtext DEFAULT NULL,
+  `kelurahan` varchar(255) DEFAULT NULL,
+  `kecamatan` varchar(255) DEFAULT NULL,
+  `kabupaten` varchar(255) DEFAULT NULL,
+  `kodepos` varchar(255) DEFAULT NULL,
+  `agama` varchar(255) DEFAULT 'Islam',
+  `status_menikah` enum('Menikah','Belum Menikah','Janda','Duda') DEFAULT NULL,
+  `pendidikan` varchar(255) DEFAULT NULL,
+  `pekerjaan` varchar(255) DEFAULT NULL,
+  `kewarganegaraan` enum('WNI','WNA') DEFAULT 'WNI',
+  `no_hp` varchar(13) DEFAULT NULL,
+  `alergi` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `pasien`
+--
+
+INSERT INTO `pasien` (`id`, `nama`, `tmp_lahir`, `tgl_lahir`, `jk`, `alamat_lengkap`, `kelurahan`, `kecamatan`, `kabupaten`, `kodepos`, `agama`, `status_menikah`, `pendidikan`, `pekerjaan`, `kewarganegaraan`, `no_hp`, `alergi`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(2, 'Mahmudah Eka Cahyawati', 'Bantul selatan', '2000-05-23', 'Laki-Laki', 'New York, Pedalaman Papua, Nugini', 'Timor', 'Suku Aborigin', 'Leste', '7854', 'Budha', 'Janda', 'Tidak Sekolah', 'Petani', 'WNI', '08744353345', NULL, '2024-08-28 03:38:53', '2024-08-28 22:50:15', NULL),
+(3, 'Faisal Dini Cahyawati', 'Ujung Kulon', '1990-01-31', 'Laki-Laki', 'Timor Leste, Ujung Paling Kulon, New York', 'Pedalaman', 'Suku Unik', 'Papua', '6757', 'Konghucu', 'Duda', 'S3', 'IRT', 'WNI', '08734324234', 'Alergi Terhadap Janji Manismu', '2024-08-28 04:04:16', '2024-08-28 04:04:16', NULL),
+(4, 'FAJAR DINI JATI PERTIWI', 'gujn fdfds', '2024-07-30', 'Perempuan', 'sjajs', 'jsij', 'dkjd', 'ii', NULL, 'Islam', 'Belum Menikah', 'SD', 'Pelajar/Mahasiswa', 'WNI', '0908', '-', '2024-08-28 13:17:08', '2024-08-28 22:41:18', NULL),
+(6, 'faisal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WNI', NULL, NULL, '2024-08-29 08:41:49', '2024-08-29 08:41:49', NULL),
+(7, 'mmut', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WNI', NULL, NULL, '2024-08-29 08:43:20', '2024-08-29 08:43:20', NULL),
+(8, 'ww', NULL, NULL, 'Perempuan', 'dsfdsfds', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WNI', NULL, NULL, '2024-08-29 08:43:20', '2024-08-29 23:54:52', NULL),
+(9, 'hhh', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'WNI', NULL, NULL, '2024-08-29 08:50:11', '2024-08-29 08:50:11', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pengeluaran_obat`
+--
+
+CREATE TABLE `pengeluaran_obat` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `rekam_id` int(11) NOT NULL,
+  `pasien_id` int(11) NOT NULL,
+  `obat_id` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `satuan` varchar(255) DEFAULT NULL,
+  `harga` int(11) NOT NULL DEFAULT 0,
+  `subtotal` int(11) NOT NULL DEFAULT 0,
+  `keterangan` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pertanyaan`
+--
+
+CREATE TABLE `pertanyaan` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kategori_id` bigint(20) UNSIGNED NOT NULL,
+  `teks_pertanyaan` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `pertanyaan`
+--
+
+INSERT INTO `pertanyaan` (`id`, `kategori_id`, `teks_pertanyaan`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Apa Yang Dikeluhkan?', '2024-08-18 09:38:51', '2024-08-18 09:38:51'),
+(2, 1, 'Bagaian Mana?', '2024-08-18 09:40:20', '2024-08-18 09:40:20'),
+(3, 1, 'Bagaimana Rasanya?', '2024-08-18 09:41:29', '2024-08-18 09:41:29'),
+(4, 1, 'Frekuensinya?', '2024-08-18 09:42:54', '2024-08-18 09:42:54'),
+(5, 1, 'Jika Dipakai?', '2024-08-18 09:43:50', '2024-08-18 09:43:50'),
+(6, 1, 'Sejak?', '2024-08-18 09:44:49', '2024-08-18 09:44:49'),
+(7, 1, 'Hingga?', '2024-08-18 09:46:16', '2024-08-18 09:46:16'),
+(8, 1, 'Klien Ingin Di?', '2024-08-18 09:47:15', '2024-08-18 09:47:15'),
+(9, 2, 'Pasien merasa dalam keadaaan sehat?', '2024-08-18 09:49:21', '2024-08-18 09:49:21'),
+(10, 2, 'Selama 5 tahun terakhir ini, pasien pernah dinyatakan mengalami penyakit serius, menjalani operasi dan atau di rawat inap di rumah sakit?\r\nKalau YA...sebutkan nama penyakitnya', '2024-08-18 09:49:56', '2024-08-18 09:49:56'),
+(11, 2, 'Pasien mempunyai kelainan pembekuan darah', '2024-08-18 09:50:45', '2024-08-18 09:50:45'),
+(12, 2, 'Pasien mempunyai reaksi alergi terhadap hal-hal sebagai berikut :\r\nMakanan?', '2024-08-18 09:51:39', '2024-08-18 09:51:39'),
+(13, 2, 'Obat-obatan?', '2024-08-18 09:52:10', '2024-08-18 09:52:10'),
+(14, 2, 'Obat yang disuntik (obat bius)?', '2024-08-18 09:52:36', '2024-08-18 09:52:36'),
+(15, 2, 'Cuaca dan lain-lain?', '2024-08-18 09:52:54', '2024-08-18 09:53:02'),
+(16, 3, 'Pasien pernah di rawat / periksa gigi sebelumnya?', '2024-08-18 09:55:00', '2024-08-18 09:55:00'),
+(17, 3, 'Kalau sudah pernah dirawat, apakah pengalaman perawatannya tidak memuaskan atau menjadikan cemas / takut untuk diperiksa ulang?', '2024-08-18 09:55:24', '2024-08-18 09:55:24'),
+(18, 3, 'Pasien mengetahui bagaimana cara memelihara kesehatan gigi dan mulut yang baik dan benar?', '2024-08-18 09:55:51', '2024-08-18 09:55:51'),
+(19, 3, 'Pasien melakukan menyikat gigi minimal 2 kali sehari setelah makan pagi dan sebelum tidur malam?', '2024-08-18 09:56:13', '2024-08-18 09:56:13'),
+(20, 3, 'Pasien menyikat gigi dengan cara yang benar, tepat dan cermat?', '2024-08-18 09:56:49', '2024-08-18 09:56:49'),
+(21, 3, 'Pasien mengurangi makanan yang manis dan lengket?', '2024-08-18 09:57:33', '2024-08-18 09:57:33'),
+(22, 3, 'Pasien memperbanyak makan buah-buahan dan sayuran yang berserat?', '2024-08-18 09:57:58', '2024-08-18 09:57:58'),
+(23, 3, 'Pasien mempunyai kebiasaan sebagai berikut :\r\nMinum teh / kopi?', '2024-08-18 09:59:47', '2024-08-18 09:59:47'),
+(24, 3, 'Minum minuman beralkohol?', '2024-08-18 10:00:12', '2024-08-18 10:00:12'),
+(25, 3, 'Minum minuman bersoda?', '2024-08-18 10:00:31', '2024-08-18 10:00:31'),
+(26, 3, 'Merokok?', '2024-08-18 10:01:45', '2024-08-18 10:01:45'),
+(27, 3, 'Mengunyah satu sisi?', '2024-08-18 10:02:14', '2024-08-18 10:02:14'),
+(28, 3, 'Mengunyah sirih/tembakau?', '2024-08-18 10:02:59', '2024-08-18 10:02:59'),
+(29, 3, 'Menggigit-gigit benda keras?', '2024-08-18 10:07:23', '2024-08-18 10:07:23'),
+(30, 3, 'Bruxism?', '2024-08-18 10:07:49', '2024-08-18 10:07:49');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `rekam`
+--
+
+CREATE TABLE `rekam` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `no_rekam` varchar(255) NOT NULL,
+  `tgl_rekam` varchar(255) NOT NULL,
+  `pasien_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `keluhan` varchar(255) NOT NULL,
+  `pemeriksaan` varchar(255) DEFAULT NULL,
+  `diagnosa` varchar(255) DEFAULT NULL,
+  `tindakan` varchar(255) DEFAULT NULL,
+  `biaya_pemeriksaan` int(11) NOT NULL DEFAULT 0,
+  `biaya_tindakan` int(11) NOT NULL DEFAULT 0,
+  `biaya_obat` int(11) NOT NULL DEFAULT 0,
+  `total_biaya` int(11) NOT NULL DEFAULT 0,
+  `petugas_id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `rekam`
+--
+
+INSERT INTO `rekam` (`id`, `no_rekam`, `tgl_rekam`, `pasien_id`, `user_id`, `keluhan`, `pemeriksaan`, `diagnosa`, `tindakan`, `biaya_pemeriksaan`, `biaya_tindakan`, `biaya_obat`, `total_biaya`, `petugas_id`, `created_at`, `updated_at`) VALUES
+(2, 'REG#202408282', '2024-08-28', 2, 2, 'Sering sakit karena tidak punya uang', '<p>Dilakukan Pemeriksaan diRsj</p>', NULL, '<p>Harus Segera diBawa KeDokter Terdekat</p>', 0, 0, 0, 0, 2, '2024-08-28 03:40:26', '2024-08-28 03:43:27'),
+(3, 'REG#202408283', '2024-08-28', 3, 3, 'Sering Disakitin Mantan Dok', '<p>Sudah Dicek Hatinya Tapi Kosong</p>', NULL, '<p>Jangan Ya Dek Ya</p>', 0, 0, 0, 0, 3, '2024-08-28 04:05:48', '2024-08-28 04:07:49'),
+(4, 'REG#202408294', '2024-08-30 06:57:21', 4, 1, 'Tidak ada keluhan', NULL, NULL, NULL, 0, 0, 0, 0, 1, '2024-08-28 23:10:33', '2024-08-29 23:57:21'),
+(5, 'REG#202408308', '2024-08-30', 8, 1, 'sakit keuangan', NULL, NULL, NULL, 0, 0, 0, 0, 1, '2024-08-29 23:50:35', '2024-08-29 23:50:35');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `rekammediskader`
+--
+
+CREATE TABLE `rekammediskader` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `pasien_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `namakondisigigi_id` bigint(20) UNSIGNED NOT NULL,
+  `total` text DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `rekammediskader`
+--
+
+INSERT INTO `rekammediskader` (`id`, `pasien_id`, `user_id`, `namakondisigigi_id`, `total`, `keterangan`, `created_at`, `updated_at`) VALUES
+(1, 3, 3, 1, '1', 'Lubang Dalam', '2024-08-28 04:06:34', '2024-08-28 04:06:34'),
+(3, 3, 3, 3, '1', NULL, '2024-08-28 04:06:34', '2024-08-28 04:06:34'),
+(4, 3, 3, 4, '3', NULL, '2024-08-28 04:06:34', '2024-08-28 04:06:34'),
+(5, 3, 3, 5, '1', 'Hareudang', '2024-08-28 04:06:34', '2024-08-28 04:06:34');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `rekam_diagnosa`
+--
+
+CREATE TABLE `rekam_diagnosa` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `rekam_id` int(11) NOT NULL,
+  `pasien_id` int(11) NOT NULL,
+  `diagnosa` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `rekam_diagnosa`
+--
+
+INSERT INTO `rekam_diagnosa` (`id`, `rekam_id`, `pasien_id`, `diagnosa`, `created_at`, `updated_at`) VALUES
+(1, 2, 2, 'K04.8', '2024-08-28 03:43:06', '2024-08-28 03:43:06'),
+(2, 3, 3, 'K07.0', '2024-08-28 04:07:32', '2024-08-28 04:07:32');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `rekam_gigi`
+--
+
+CREATE TABLE `rekam_gigi` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `rekam_id` int(11) NOT NULL,
+  `pasien_id` int(11) NOT NULL,
+  `elemen_gigi` varchar(255) NOT NULL,
+  `pemeriksaan` varchar(255) DEFAULT NULL,
+  `diagnosa` varchar(255) DEFAULT NULL,
+  `tindakan` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `rekam_gigi`
+--
+
+INSERT INTO `rekam_gigi` (`id`, `user_id`, `rekam_id`, `pasien_id`, `elemen_gigi`, `pemeriksaan`, `diagnosa`, `tindakan`, `created_at`, `updated_at`) VALUES
+(2, 2, 2, 2, '11', '_', 'K02.0', 'PE001', NULL, NULL),
+(3, 2, 2, 2, '16', '∑', 'K02.9', NULL, NULL, NULL),
+(4, 2, 2, 2, '31', 'Ο', NULL, 'PE001', NULL, NULL),
+(5, 2, 2, 2, '85', 'X', NULL, NULL, NULL, NULL),
+(6, 2, 2, 2, '28', 'V', NULL, 'CR002', NULL, NULL),
+(7, 2, 2, 2, '65', '⚫', 'K07.1', 'SI001', NULL, NULL),
+(9, 1, 5, 8, '11', '_', NULL, 'EX001', NULL, NULL),
+(10, 1, 5, 8, '31', 'V', 'K02.1', NULL, NULL, NULL),
+(11, 1, 4, 4, '11', '_', NULL, 'EX001', NULL, NULL),
+(12, 1, 4, 4, '24', '_', NULL, 'EX001', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tindakan`
+--
+
+CREATE TABLE `tindakan` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kode` varchar(255) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `harga` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `tindakan`
+--
+
+INSERT INTO `tindakan` (`id`, `kode`, `nama`, `harga`, `created_at`, `updated_at`) VALUES
+(1, 'EX001', 'Ekstraksi gigi susu', 250000, '2024-08-28 02:00:00', '2024-08-28 02:00:00'),
+(2, 'EX002', 'Ekstraksi gigi dewasa', 350000, '2024-08-28 02:05:00', '2024-08-28 02:05:00'),
+(3, 'SC001', 'Scaling gigi', 200000, '2024-08-28 02:10:00', '2024-08-28 02:10:00'),
+(4, 'FL001', 'Aplikasi fluoride', 150000, '2024-08-28 02:15:00', '2024-08-28 02:15:00'),
+(5, 'XR001', 'Rontgen gigi', 100000, '2024-08-28 02:20:00', '2024-08-28 02:20:00'),
+(6, 'FI001', 'Fissure sealant', 175000, '2024-08-28 02:25:00', '2024-08-28 02:25:00'),
+(7, 'CR001', 'Composite resin (tambal gigi)', 300000, '2024-08-28 02:30:00', '2024-08-28 02:30:00'),
+(8, 'AM001', 'Amalgam filling', 250000, '2024-08-28 02:35:00', '2024-08-28 02:35:00'),
+(9, 'RC001', 'Root canal treatment (1 saluran)', 1000000, '2024-08-28 02:40:00', '2024-08-28 02:40:00'),
+(10, 'RC002', 'Root canal treatment (2 saluran)', 1500000, '2024-08-28 02:45:00', '2024-08-28 02:45:00'),
+(11, 'CR002', 'Crown porcelain', 2000000, '2024-08-28 02:50:00', '2024-08-28 02:50:00'),
+(12, 'BR001', 'Bridge (per unit)', 1800000, '2024-08-28 02:55:00', '2024-08-28 02:55:00'),
+(13, 'IM001', 'Implan gigi', 5000000, '2024-08-28 03:00:00', '2024-08-28 03:00:00'),
+(14, 'OR001', 'Konsultasi ortodonti', 300000, '2024-08-28 03:05:00', '2024-08-28 03:05:00'),
+(15, 'OR002', 'Pemasangan kawat gigi (metal)', 5000000, '2024-08-28 03:10:00', '2024-08-28 03:10:00'),
+(16, 'OR003', 'Pemasangan kawat gigi (ceramic)', 7000000, '2024-08-28 03:15:00', '2024-08-28 03:15:00'),
+(17, 'BL001', 'Bleaching gigi (in-office)', 2500000, '2024-08-28 03:20:00', '2024-08-28 03:20:00'),
+(18, 'BL002', 'Bleaching gigi (take-home kit)', 1500000, '2024-08-28 03:25:00', '2024-08-28 03:25:00'),
+(19, 'PE001', 'Pemeriksaan gigi rutin', 100000, '2024-08-28 03:30:00', '2024-08-28 03:30:00'),
+(20, 'PR001', 'Prostodonti konsultasi', 250000, '2024-08-28 03:35:00', '2024-08-28 03:35:00'),
+(21, 'DE001', 'Gigi tiruan sebagian lepasan', 1500000, '2024-08-28 03:40:00', '2024-08-28 03:40:00'),
+(22, 'DE002', 'Gigi tiruan penuh', 3000000, '2024-08-28 03:45:00', '2024-08-28 03:45:00'),
+(23, 'PE002', 'Perawatan periodontal', 500000, '2024-08-28 03:50:00', '2024-08-28 03:50:00'),
+(24, 'GS001', 'Gingivektomi (per kuadran)', 750000, '2024-08-28 03:55:00', '2024-08-28 03:55:00'),
+(25, 'AP001', 'Apikoektomi', 1200000, '2024-08-28 04:00:00', '2024-08-28 04:00:00'),
+(26, 'VE001', 'Veneer gigi (per unit)', 2500000, '2024-08-28 04:05:00', '2024-08-28 04:05:00'),
+(27, 'SS001', 'Space maintainer', 500000, '2024-08-28 04:10:00', '2024-08-28 04:10:00'),
+(28, 'PT001', 'Pit dan fissure sealant (per gigi)', 150000, '2024-08-28 04:15:00', '2024-08-28 04:15:00'),
+(29, 'IN001', 'Inlay', 1500000, '2024-08-28 04:20:00', '2024-08-28 04:20:00'),
+(30, 'ON001', 'Onlay', 1800000, '2024-08-28 04:25:00', '2024-08-28 04:25:00'),
+(31, 'SP001', 'Splinting gigi goyah', 400000, '2024-08-28 04:30:00', '2024-08-28 04:30:00'),
+(32, 'OC001', 'Occlusal adjustment', 300000, '2024-08-28 04:35:00', '2024-08-28 04:35:00'),
+(33, 'NM001', 'Night guard', 600000, '2024-08-28 04:40:00', '2024-08-28 04:40:00'),
+(34, 'PU001', 'Pulp capping', 200000, '2024-08-28 04:45:00', '2024-08-28 04:45:00'),
+(35, 'PL001', 'Pulpotomi', 350000, '2024-08-28 04:50:00', '2024-08-28 04:50:00'),
+(36, 'DE003', 'Denture relining', 500000, '2024-08-28 04:55:00', '2024-08-28 04:55:00'),
+(37, 'DE004', 'Denture repair', 300000, '2024-08-28 05:00:00', '2024-08-28 05:00:00'),
+(38, 'OR004', 'Retainer ortodonti', 1000000, '2024-08-28 05:05:00', '2024-08-28 05:05:00'),
+(39, 'MI001', 'Micro abrasion', 250000, '2024-08-28 05:10:00', '2024-08-28 05:10:00'),
+(40, 'SE001', 'Sedasi inhalasi', 500000, '2024-08-28 05:15:00', '2024-08-28 05:15:00'),
+(41, 'TO001', 'Topical fluoride application', 150000, '2024-08-28 05:20:00', '2024-08-28 05:20:00'),
+(42, 'OR005', 'Analisis ortodonti', 500000, '2024-08-28 05:25:00', '2024-08-28 05:25:00'),
+(43, 'PE003', 'Perawatan sensitifitas gigi', 200000, '2024-08-28 05:30:00', '2024-08-28 05:30:00'),
+(44, 'CT001', 'CT Scan gigi', 750000, '2024-08-28 05:35:00', '2024-08-28 05:35:00'),
+(45, 'LA001', 'Laser treatment gusi', 600000, '2024-08-28 05:40:00', '2024-08-28 05:40:00'),
+(46, 'PE004', 'Perawatan halitosis', 300000, '2024-08-28 05:45:00', '2024-08-28 05:45:00'),
+(47, 'BO001', 'Bone graft', 2000000, '2024-08-28 05:50:00', '2024-08-28 05:50:00'),
+(48, 'SI001', 'Sinus lift', 3000000, '2024-08-28 05:55:00', '2024-08-28 05:55:00'),
+(49, 'TMJ001', 'Terapi TMJ', 500000, '2024-08-28 06:00:00', '2024-08-28 06:00:00'),
+(50, 'OR006', 'Alat ekspansi palatal', 1500000, '2024-08-28 06:05:00', '2024-08-28 06:05:00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `toga`
+--
+
+CREATE TABLE `toga` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `deskripsi` text NOT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `toga`
+--
+
+INSERT INTO `toga` (`id`, `judul`, `deskripsi`, `foto`, `created_at`, `updated_at`) VALUES
+(1, 'Kunyit untuk Sakit Gigi', 'Kunyit, dengan sifat anti-inflamasi dan antimikrobanya, telah lama digunakan sebagai obat tradisional untuk meredakan sakit gigi. Caranya sederhana: campurkan bubuk kunyit dengan sedikit air hingga membentuk pasta, lalu oleskan pada gigi dan gusi yang sakit. Biarkan selama beberapa menit sebelum dibilas. Penggunaan rutin dapat membantu mengurangi peradangan dan membunuh bakteri penyebab sakit gigi.', 'toga/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(2, 'Cengkeh Pereda Nyeri Gigi', 'Cengkeh mengandung eugenol, zat alami dengan sifat analgesik kuat yang efektif meredakan nyeri gigi. Untuk menggunakannya, rendam beberapa buah cengkeh dalam air hangat selama beberapa menit, lalu berkumurlah dengan air rendaman tersebut. Alternatifnya, Anda bisa mengunyah langsung sebuah cengkeh di dekat gigi yang bermasalah. Efek mati rasa dari cengkeh akan segera terasa, memberikan kelegaan dari rasa sakit.', 'toga/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(3, 'Daun Sirih untuk Kesehatan Gigi dan Gusi', 'Daun sirih telah lama dikenal memiliki sifat antiseptik dan antimikroba yang sangat baik untuk kesehatan mulut. Cara penggunaannya cukup mudah: kunyah langsung 1-2 lembar daun sirih segar, atau rebus beberapa lembar dalam air dan gunakan air rebusan untuk berkumur. Penggunaan rutin dapat membantu mencegah bau mulut, mengurangi plak gigi, dan menjaga kesehatan gusi.', 'toga/4IdBwtO371DBKqqhLpAmS7jMdCZbgG3HIU2Ci4Sf.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(4, 'Bawang Putih: Antibiotik Alami untuk Gigi', 'Bawang putih dikenal luas akan sifat antibiotik alaminya yang kuat. Untuk masalah gigi, hancurkan satu siung bawang putih hingga membentuk pasta, lalu oleskan langsung pada gigi yang bermasalah. Biarkan selama beberapa menit sebelum dibilas. Meskipun aromanya mungkin kurang menyenangkan, kemampuannya dalam membunuh bakteri penyebab infeksi gigi sangat efektif.', 'toga/he3KCiBEQuM1jkpskGRnFFCHL9pZryIqb7ZpXvJY.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(5, 'Minyak Kelapa untuk Perawatan Gigi', 'Minyak kelapa memiliki sifat antimikroba dan anti-inflamasi yang baik untuk kesehatan gigi dan mulut. Teknik oil pulling, yaitu berkumur dengan minyak kelapa selama 15-20 menit setiap pagi, dapat membantu mengurangi plak, menyegarkan nafas, dan memperkuat gusi. Selain itu, minyak kelapa juga dapat digunakan sebagai pasta gigi alami dengan mencampurkannya bersama sedikit baking soda.', 'toga/GqR6RYL9MpCDTjP9rZv0E7I6vfYOKIVPIsmlCpy0.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(6, 'Jahe untuk Meredakan Nyeri Gusi', 'Jahe memiliki sifat anti-inflamasi yang kuat, membuatnya efektif untuk meredakan nyeri dan pembengkakan gusi. Cara menggunakannya, iris tipis jahe segar dan gosokkan perlahan pada gusi yang sakit. Alternatifnya, Anda bisa membuat teh jahe dan berkumur dengan air teh tersebut setelah didinginkan. Penggunaan rutin dapat membantu mengurangi peradangan dan meningkatkan kesehatan gusi secara keseluruhan.', 'toga/8Mu9C2XYEjSBvgytwNn6IsfItM95a93sTQjKDVYr.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(7, 'Lidah Buaya: Penyembuh Alami Luka Mulut', 'Lidah buaya terkenal akan sifat penyembuh dan anti-inflamasinya. Untuk luka di mulut atau gusi yang berdarah, potong selembar daun lidah buaya dan aplikasikan gelnya langsung pada area yang terkena. Sifat antibakterinya akan membantu mencegah infeksi, sementara kandungan vitaminnya mempercepat proses penyembuhan. Penggunaan rutin juga dapat membantu menjaga kesehatan gusi.', 'toga/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(8, 'Teh Hijau untuk Kesehatan Gigi', 'Teh hijau kaya akan antioksidan dan senyawa polifenol yang baik untuk kesehatan mulut. Minum teh hijau secara teratur atau berkumur dengan teh hijau yang telah didinginkan dapat membantu mengurangi bakteri penyebab bau mulut dan plak gigi. Selain itu, kandungan fluoride alami dalam teh hijau juga membantu memperkuat enamel gigi, melindunginya dari kerusakan dan pembusukan.', 'toga/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(9, 'Propolis untuk Perawatan Gigi Berlubang', 'Propolis, produk lebah yang kaya akan senyawa antimikroba, telah digunakan sejak lama untuk perawatan gigi. Untuk gigi berlubang, oleskan langsung tincture propolis pada area yang terkena. Sifat antibakterinya akan membantu membunuh kuman penyebab pembusukan, sementara kemampuannya dalam merangsang regenerasi jaringan dapat membantu memperbaiki kerusakan pada gigi.', 'toga/4IdBwtO371DBKqqhLpAmS7jMdCZbgG3HIU2Ci4Sf.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(10, 'Daun Jambu Biji untuk Gusi Berdarah', 'Daun jambu biji kaya akan vitamin C dan antioksidan yang sangat baik untuk kesehatan gusi. Untuk mengatasi gusi berdarah, kunyah langsung 1-2 lembar daun jambu biji segar, atau rebus beberapa lembar dalam air dan gunakan air rebusan untuk berkumur. Penggunaan rutin dapat membantu memperkuat jaringan gusi, mengurangi pendarahan, dan mencegah infeksi pada gusi.', 'toga/he3KCiBEQuM1jkpskGRnFFCHL9pZryIqb7ZpXvJY.jpg', '2024-08-28 05:36:24', '2024-08-28 05:36:24'),
+(11, 'Kayu Manis untuk Nafas Segar', 'Kayu manis tidak hanya memberikan aroma yang harum, tetapi juga memiliki sifat antibakteri yang efektif melawan bakteri penyebab bau mulut. Untuk menggunakannya, rebus beberapa batang kayu manis dalam air, biarkan dingin, dan gunakan sebagai obat kumur alami. Selain menyegarkan nafas, kayu manis juga dapat membantu mengurangi plak gigi dan menjaga kesehatan gusi berkat kandungan antiinflamasinya.', 'toga/GqR6RYL9MpCDTjP9rZv0E7I6vfYOKIVPIsmlCpy0.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(12, 'Daun Kemangi untuk Gusi Sehat', 'Daun kemangi kaya akan minyak esensial yang memiliki sifat antibakteri dan antiinflamasi. Mengunyah beberapa lembar daun kemangi segar setiap hari dapat membantu membersihkan mulut dari bakteri, menyegarkan nafas, dan menjaga kesehatan gusi. Alternatifnya, Anda bisa membuat teh kemangi dan menggunakannya sebagai obat kumur alami untuk melawan bakteri penyebab plak dan radang gusi.', 'toga/8Mu9C2XYEjSBvgytwNn6IsfItM95a93sTQjKDVYr.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(13, 'Minyak Tea Tree untuk Perawatan Gigi', 'Minyak tea tree terkenal akan sifat antimikrobanya yang kuat. Untuk perawatan gigi, campurkan beberapa tetes minyak tea tree dengan air dan gunakan sebagai obat kumur. Ini dapat membantu membunuh bakteri penyebab bau mulut, plak, dan gingivitis. Namun, penting untuk tidak menelan campuran ini dan selalu mengencerkan minyak tea tree sebelum digunakan, karena konsentrasi tinggi dapat menyebabkan iritasi.', 'toga/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(14, 'Biji Adas untuk Sakit Gigi', 'Biji adas memiliki sifat analgesik alami yang dapat membantu meredakan sakit gigi. Kunyah sedikit biji adas di dekat gigi yang sakit, atau buat teh dengan merebus biji adas dan gunakan sebagai obat kumur. Komponen aktif dalam biji adas dapat membantu mengurangi rasa sakit dan peradangan, memberikan kelegaan sementara dari ketidaknyamanan gigi.', 'toga/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(15, 'Daun Mint untuk Kesegaran Mulut', 'Daun mint tidak hanya menyegarkan nafas, tetapi juga memiliki sifat antibakteri yang dapat membantu menjaga kesehatan mulut. Kunyah langsung beberapa lembar daun mint segar, atau buat teh mint untuk berkumur. Mentol dalam daun mint memberikan sensasi dingin yang dapat membantu meredakan nyeri gusi ringan, sementara sifat antibakterinya membantu melawan bakteri penyebab bau mulut dan plak gigi.', 'toga/4IdBwtO371DBKqqhLpAmS7jMdCZbgG3HIU2Ci4Sf.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(16, 'Buah Delima untuk Gusi Kuat', 'Buah delima kaya akan antioksidan dan senyawa anti-inflamasi yang sangat baik untuk kesehatan gusi. Konsumsi buah delima secara teratur atau berkumur dengan jus delima yang diencerkan dapat membantu mengurangi peradangan gusi, mencegah plak, dan memperkuat jaringan gusi. Kandungan tanin dalam delima juga memiliki efek astringen yang dapat membantu mengencangkan gusi dan mengurangi pendarahan.', 'toga/he3KCiBEQuM1jkpskGRnFFCHL9pZryIqb7ZpXvJY.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(17, 'Minyak Zaitun untuk Oil Pulling', 'Minyak zaitun, selain bermanfaat untuk kesehatan secara umum, juga dapat digunakan untuk teknik oil pulling. Berkumur dengan minyak zaitun selama 15-20 menit setiap pagi dapat membantu menarik keluar toksin dari mulut, mengurangi plak, dan memperkuat gusi. Sifat anti-inflamasi minyak zaitun juga dapat membantu meredakan gusi yang bengkak dan sensitif.', 'toga/GqR6RYL9MpCDTjP9rZv0E7I6vfYOKIVPIsmlCpy0.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(18, 'Daun Sage untuk Perawatan Gusi', 'Daun sage memiliki sifat antiseptik dan astringen yang baik untuk kesehatan gusi. Rebus beberapa lembar daun sage dalam air, biarkan dingin, dan gunakan sebagai obat kumur. Ini dapat membantu mengurangi peradangan gusi, menyembuhkan luka kecil di mulut, dan mengurangi produksi air liur berlebih. Penggunaan rutin dapat membantu menjaga kesehatan gusi dan mencegah infeksi mulut.', 'toga/8Mu9C2XYEjSBvgytwNn6IsfItM95a93sTQjKDVYr.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(19, 'Akar Licorice untuk Gigi Berlubang', 'Akar licorice mengandung senyawa antibakteri yang dapat membantu melawan bakteri penyebab gigi berlubang. Kunyah sepotong kecil akar licorice atau gunakan bubuk licorice untuk menggosok gigi. Selain membantu mencegah pembusukan gigi, licorice juga dapat membantu mengurangi plak dan menyegarkan nafas. Namun, penggunaan dalam jangka panjang harus dikonsultasikan dengan dokter gigi karena dapat mempengaruhi tekanan darah.', 'toga/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(20, 'Jeruk Nipis untuk Memutihkan Gigi', 'Jeruk nipis, dengan kandungan asam sitratnya, dapat membantu memutihkan gigi secara alami. Campurkan perasan jeruk nipis dengan sedikit baking soda hingga membentuk pasta, lalu oleskan pada gigi menggunakan sikat gigi. Biarkan selama beberapa menit sebelum dibilas. Penggunaan sekali atau dua kali seminggu dapat membantu menghilangkan noda pada gigi dan memberikan kilau alami. Namun, karena sifat asamnya, penggunaan berlebihan dapat merusak enamel gigi, jadi gunakan dengan hati-hati.', 'toga/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', '2024-08-28 05:37:07', '2024-08-28 05:37:07'),
+(21, 'Daun Salam untuk Kesehatan Gigi', 'Daun salam, selain dikenal sebagai bumbu masak, juga memiliki manfaat untuk kesehatan gigi dan mulut. Kandungan minyak esensial dalam daun salam memiliki sifat antibakteri yang dapat membantu melawan bakteri penyebab bau mulut dan plak gigi. Cara penggunaannya cukup sederhana: kunyah beberapa lembar daun salam segar atau rebus beberapa lembar dalam air, kemudian gunakan air rebusannya untuk berkumur. Penggunaan rutin dapat membantu menjaga kesegaran nafas dan kebersihan mulut secara alami.', 'toga/4IdBwtO371DBKqqhLpAmS7jMdCZbgG3HIU2Ci4Sf.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(22, 'Madu untuk Perawatan Gusi', 'Madu telah lama dikenal memiliki sifat antibakteri dan penyembuh alami. Untuk kesehatan gusi, oleskan sedikit madu murni pada gusi yang bengkak atau berdarah. Biarkan selama beberapa menit sebelum dibilas dengan air hangat. Sifat antibakteri madu dapat membantu melawan infeksi, sementara kandungan antiinflamasinya membantu mengurangi pembengkakan. Penggunaan rutin dapat membantu mempercepat penyembuhan gusi yang bermasalah dan menjaga kesehatan mulut secara keseluruhan.', 'toga/he3KCiBEQuM1jkpskGRnFFCHL9pZryIqb7ZpXvJY.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(23, 'Biji Wijen untuk Gigi Kuat', 'Biji wijen kaya akan kalsium dan mineral lainnya yang penting untuk kesehatan gigi. Konsumsi biji wijen secara teratur dapat membantu memperkuat struktur gigi dan tulang rahang. Selain itu, mengunyah biji wijen juga dapat membantu membersihkan sisa makanan di antara gigi. Untuk penggunaan topikal, Anda bisa membuat pasta dari biji wijen yang dihaluskan dan sedikit air, lalu oleskan pada gigi dan gusi. Biarkan selama beberapa menit sebelum dibilas untuk membantu remineralisasi gigi dan menjaga kesehatan gusi.', 'toga/GqR6RYL9MpCDTjP9rZv0E7I6vfYOKIVPIsmlCpy0.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(24, 'Daun Pegagan untuk Penyembuhan Luka Mulut', 'Daun pegagan atau centella asiatica dikenal memiliki kemampuan luar biasa dalam mempercepat penyembuhan luka. Untuk luka di dalam mulut atau sariawan, haluskan beberapa lembar daun pegagan segar dan oleskan pada area yang terkena. Sifat antiinflamasi dan regeneratif dari pegagan dapat membantu meredakan rasa sakit dan mempercepat proses penyembuhan. Alternatifnya, Anda bisa membuat teh dari daun pegagan kering dan gunakan sebagai obat kumur untuk perawatan mulut secara menyeluruh.', 'toga/8Mu9C2XYEjSBvgytwNn6IsfItM95a93sTQjKDVYr.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(25, 'Bunga Chamomile untuk Nyeri Gigi', 'Chamomile tidak hanya baik untuk menenangkan pikiran, tetapi juga efektif dalam meredakan nyeri gigi. Kandungan antiinflamasi dan antispasmodik dalam chamomile dapat membantu mengurangi rasa sakit dan pembengkakan. Buat teh chamomile dengan menyeduh bunga chamomile kering dalam air panas, biarkan dingin, lalu gunakan untuk berkumur atau kompres pada pipi di area gigi yang sakit. Penggunaan rutin juga dapat membantu menenangkan gusi yang sensitif dan mengurangi risiko infeksi mulut.', 'toga/JuS87FLdL1wy43UmypfZ3MhyVT9Er7eAVJxU5PQW.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(26, 'Daun Kelor untuk Gigi dan Gusi Sehat', 'Daun kelor kaya akan vitamin C, kalsium, dan antioksidan yang sangat bermanfaat untuk kesehatan gigi dan gusi. Konsumsi daun kelor secara teratur, baik dalam bentuk segar maupun bubuk, dapat membantu memperkuat struktur gigi dan meningkatkan kesehatan gusi. Untuk penggunaan topikal, buat pasta dari daun kelor yang dihaluskan dan sedikit air, lalu oleskan pada gigi dan gusi. Biarkan selama beberapa menit sebelum dibilas. Sifat antibakteri daun kelor juga dapat membantu melawan bakteri penyebab plak dan bau mulut.', 'toga/ACcOSteECf9nQ5A8mZ1ciLu8rwRC6RN4fpQ1F6Kf.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(27, 'Minyak Oregano untuk Infeksi Gigi', 'Minyak oregano dikenal memiliki sifat antimikroba yang kuat, membuatnya efektif dalam melawan infeksi gigi. Untuk menggunakannya, campurkan beberapa tetes minyak oregano dengan minyak kelapa sebagai pengencer, lalu oleskan pada gigi yang terinfeksi menggunakan cotton bud. Biarkan selama beberapa menit sebelum dibilas. Penggunaan rutin dapat membantu mengurangi rasa sakit, membunuh bakteri penyebab infeksi, dan mempercepat proses penyembuhan. Namun, karena konsentrasinya yang kuat, selalu encerkan minyak oregano sebelum digunakan dan hindari menelannya.', 'toga/4IdBwtO371DBKqqhLpAmS7jMdCZbgG3HIU2Ci4Sf.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(28, 'Daun Ketumbar untuk Nafas Segar', 'Daun ketumbar tidak hanya memberikan rasa segar pada masakan, tetapi juga efektif dalam menyegarkan nafas. Kandungan klorofil dalam daun ketumbar membantu menetralisir bau mulut, sementara sifat antibakterinya dapat membantu melawan bakteri penyebab bau tidak sedap. Kunyah beberapa lembar daun ketumbar segar setelah makan, atau buat jus dari daun ketumbar dan minum secara rutin. Selain menyegarkan nafas, konsumsi rutin daun ketumbar juga dapat membantu meningkatkan kesehatan mulut secara keseluruhan.', 'toga/he3KCiBEQuM1jkpskGRnFFCHL9pZryIqb7ZpXvJY.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(29, 'Bawang Merah untuk Sakit Gigi', 'Meskipun aromanya kuat, bawang merah memiliki sifat antimikroba dan analgesik yang dapat membantu meredakan sakit gigi. Potong sepotong kecil bawang merah segar dan tempelkan langsung pada gigi yang sakit atau gusi di sekitarnya. Biarkan selama beberapa menit sebelum dibilas. Komponen sulfur dalam bawang merah dapat membantu membunuh bakteri penyebab infeksi, sementara sifat anti-inflamasinya membantu mengurangi pembengkakan. Penggunaan ini mungkin tidak nyaman karena aromanya, tetapi dapat memberikan kelegaan cepat dari rasa sakit.', 'toga/GqR6RYL9MpCDTjP9rZv0E7I6vfYOKIVPIsmlCpy0.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57'),
+(30, 'Daun Beluntas untuk Perawatan Mulut', 'Daun beluntas, tanaman yang umum ditemukan di Asia Tenggara, memiliki sifat antibakteri dan antioksidan yang bermanfaat untuk kesehatan mulut. Kunyah beberapa lembar daun beluntas segar atau buat teh dengan merebus daunnya dan gunakan sebagai obat kumur. Cara ini dapat membantu mengurangi plak gigi, menyegarkan nafas, dan menjaga kesehatan gusi. Kandungan flavonoid dalam daun beluntas juga dapat membantu memperkuat sistem kekebalan tubuh di dalam mulut, mencegah infeksi dan penyakit gusi.', 'toga/8Mu9C2XYEjSBvgytwNn6IsfItM95a93sTQjKDVYr.jpg', '2024-08-28 05:37:57', '2024-08-28 05:37:57');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` int(11) NOT NULL DEFAULT 1 COMMENT '\n            1 => Admin\n            2 => Petugas Registrasi\n            3 => Dokter\n            4 => Petugas Obat\n            ',
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `phone`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', '08123456789', 'sigemoy@gmail.com', '2024-08-28 02:30:29', '$2y$10$O1pBexZUn/ofI1hrRtU8zeye.8cnRNWNXwF3jL4i/U7LcTv5WmMu6', 1, '4C87v0HuWU0jffF7kZMWhdFAKYdDKpuSLCPa6zckVgs3EgthilRVL3sBM6Jj', '2024-08-28 02:30:29', '2024-08-28 02:30:29'),
+(2, 'Drg Fajar Dini S', '088232324437', 'drgfajardini@gmail.com', NULL, '$2y$10$69hfwRNWefKpi7RgkEB43OJgeKz.XVy4EOK/rXlS2IsOmPhmH2rai', 3, NULL, '2024-08-28 03:26:40', '2024-08-28 03:26:40'),
+(3, 'Drg Mahmudah Eka Cahyawati', '089523090508', 'drgmahmudah@gmail.com', NULL, '$2y$10$c2cy3TguYaYsY5UhjEtyn.7dEg9kW4Qsz85cEucJV/ssgCJuSGSzG', 2, NULL, '2024-08-28 03:29:44', '2024-08-28 03:30:01');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indeks untuk tabel `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indeks untuk tabel `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indeks untuk tabel `dokter`
+--
+ALTER TABLE `dokter`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `dokter_user_id_foreign` (`user_id`);
+
+--
+-- Indeks untuk tabel `edukasi`
+--
+ALTER TABLE `edukasi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `icds`
+--
+ALTER TABLE `icds`
+  ADD PRIMARY KEY (`code`);
+
+--
+-- Indeks untuk tabel `jawaban_pasien`
+--
+ALTER TABLE `jawaban_pasien`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jawaban_pasien_pasien_id_foreign` (`pasien_id`),
+  ADD KEY `jawaban_pasien_pertanyaan_id_foreign` (`pertanyaan_id`),
+  ADD KEY `jawaban_pasien_opsi_jawaban_id_foreign` (`opsi_jawaban_id`);
+
+--
+-- Indeks untuk tabel `kategori_pertanyaan`
+--
+ALTER TABLE `kategori_pertanyaan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `kondisi_gigi`
+--
+ALTER TABLE `kondisi_gigi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `namakondisigigi`
+--
+ALTER TABLE `namakondisigigi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notifications_notifiable_type_notifiable_id_index` (`notifiable_type`,`notifiable_id`);
+
+--
+-- Indeks untuk tabel `obat`
+--
+ALTER TABLE `obat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `opsi_jawaban`
+--
+ALTER TABLE `opsi_jawaban`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `opsi_jawaban_pertanyaan_id_foreign` (`pertanyaan_id`);
+
+--
+-- Indeks untuk tabel `pasien`
+--
+ALTER TABLE `pasien`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indeks untuk tabel `pengeluaran_obat`
+--
+ALTER TABLE `pengeluaran_obat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indeks untuk tabel `pertanyaan`
+--
+ALTER TABLE `pertanyaan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pertanyaan_kategori_id_foreign` (`kategori_id`);
+
+--
+-- Indeks untuk tabel `rekam`
+--
+ALTER TABLE `rekam`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `rekammediskader`
+--
+ALTER TABLE `rekammediskader`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rekammediskader_pasien_id_foreign` (`pasien_id`),
+  ADD KEY `rekammediskader_user_id_foreign` (`user_id`),
+  ADD KEY `rekammediskader_namakondisigigi_id_foreign` (`namakondisigigi_id`);
+
+--
+-- Indeks untuk tabel `rekam_diagnosa`
+--
+ALTER TABLE `rekam_diagnosa`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `rekam_gigi`
+--
+ALTER TABLE `rekam_gigi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rekam_gigi_user_id_foreign` (`user_id`);
+
+--
+-- Indeks untuk tabel `tindakan`
+--
+ALTER TABLE `tindakan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `toga`
+--
+ALTER TABLE `toga`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_phone_unique` (`phone`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `dokter`
+--
+ALTER TABLE `dokter`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `edukasi`
+--
+ALTER TABLE `edukasi`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT untuk tabel `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `jawaban_pasien`
+--
+ALTER TABLE `jawaban_pasien`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=396;
+
+--
+-- AUTO_INCREMENT untuk tabel `kategori_pertanyaan`
+--
+ALTER TABLE `kategori_pertanyaan`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT untuk tabel `kondisi_gigi`
+--
+ALTER TABLE `kondisi_gigi`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT untuk tabel `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT untuk tabel `namakondisigigi`
+--
+ALTER TABLE `namakondisigigi`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `obat`
+--
+ALTER TABLE `obat`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `opsi_jawaban`
+--
+ALTER TABLE `opsi_jawaban`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+
+--
+-- AUTO_INCREMENT untuk tabel `pasien`
+--
+ALTER TABLE `pasien`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT untuk tabel `pengeluaran_obat`
+--
+ALTER TABLE `pengeluaran_obat`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `pertanyaan`
+--
+ALTER TABLE `pertanyaan`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT untuk tabel `rekam`
+--
+ALTER TABLE `rekam`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `rekammediskader`
+--
+ALTER TABLE `rekammediskader`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `rekam_diagnosa`
+--
+ALTER TABLE `rekam_diagnosa`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `rekam_gigi`
+--
+ALTER TABLE `rekam_gigi`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT untuk tabel `tindakan`
+--
+ALTER TABLE `tindakan`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT untuk tabel `toga`
+--
+ALTER TABLE `toga`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT untuk tabel `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `dokter`
+--
+ALTER TABLE `dokter`
+  ADD CONSTRAINT `dokter_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `jawaban_pasien`
+--
+ALTER TABLE `jawaban_pasien`
+  ADD CONSTRAINT `jawaban_pasien_opsi_jawaban_id_foreign` FOREIGN KEY (`opsi_jawaban_id`) REFERENCES `opsi_jawaban` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `jawaban_pasien_pasien_id_foreign` FOREIGN KEY (`pasien_id`) REFERENCES `pasien` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `jawaban_pasien_pertanyaan_id_foreign` FOREIGN KEY (`pertanyaan_id`) REFERENCES `pertanyaan` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `opsi_jawaban`
+--
+ALTER TABLE `opsi_jawaban`
+  ADD CONSTRAINT `opsi_jawaban_pertanyaan_id_foreign` FOREIGN KEY (`pertanyaan_id`) REFERENCES `pertanyaan` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `pertanyaan`
+--
+ALTER TABLE `pertanyaan`
+  ADD CONSTRAINT `pertanyaan_kategori_id_foreign` FOREIGN KEY (`kategori_id`) REFERENCES `kategori_pertanyaan` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `rekammediskader`
+--
+ALTER TABLE `rekammediskader`
+  ADD CONSTRAINT `rekammediskader_namakondisigigi_id_foreign` FOREIGN KEY (`namakondisigigi_id`) REFERENCES `namakondisigigi` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `rekammediskader_pasien_id_foreign` FOREIGN KEY (`pasien_id`) REFERENCES `pasien` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `rekammediskader_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `rekam_gigi`
+--
+ALTER TABLE `rekam_gigi`
+  ADD CONSTRAINT `rekam_gigi_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
