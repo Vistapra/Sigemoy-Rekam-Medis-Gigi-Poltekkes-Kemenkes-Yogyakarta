@@ -12,33 +12,14 @@ use Illuminate\Support\Facades\DB;
 
 class RekamGigiController extends Controller
 {
-    public function odontogram($pasienId)
-    {
-        $pasien = Pasien::findOrFail($pasienId);
-        $all_riwayat_gigi = RekamGigi::where('pasien_id', $pasienId)->get();
-
-        $kondisi_gigi = KondisiGigi::all()
-            ->groupBy('kode')
-            ->map(function ($group) {
-                $first = $group->first();
-                $first->color = $this->getColorForCondition($first->kode);
-                return $first;
-            })
-            ->values();
-
-        $odontogram_data = $all_riwayat_gigi->pluck('pemeriksaan', 'elemen_gigi')->toArray();
-
-        return view('rekam.odontogram', compact('pasien', 'pasienId', 'all_riwayat_gigi', 'kondisi_gigi', 'odontogram_data'));
-    }
-
     public function index($pasienId)
     {
         $pasien = Pasien::findOrFail($pasienId);
         $tindakan = Tindakan::all();
         $kondisi_gigi = KondisiGigi::all();
         $pem_gigi = RekamGigi::where('pasien_id', $pasienId)->get();
-        $elemen_gigis = $pem_gigi->pluck('elemen_gigi')->implode(',');
-        $pemeriksaan_gigi = $pem_gigi->pluck('pemeriksaan')->implode(',');
+        $elemen_gigis = $pem_gigi->pluck('elemen_gigi')->toJson(); // Ubah ini
+        $pemeriksaan_gigi = $pem_gigi->pluck('pemeriksaan')->toJson(); // Dan ini
 
         return view('rekam.rekam-gigi', compact('pasien', 'tindakan', 'kondisi_gigi', 'elemen_gigis', 'pemeriksaan_gigi', 'pem_gigi'));
     }
@@ -87,15 +68,15 @@ class RekamGigiController extends Controller
     public function edit($pasienId)
     {
         $pasien = Pasien::findOrFail($pasienId);
-        
-         $rekam = Rekam::where('pasien_id', $pasienId)->latest()->first();
 
-    if (!$rekam) {
-        return redirect()->route('rekam.tambah', ['pasienid' => $pasienId])
-            ->with('info', 'Belum ada rekam medis untuk pasien ini. Silakan tambahkan rekam baru.');
-    }
-    
-    
+        $rekam = Rekam::where('pasien_id', $pasienId)->latest()->first();
+
+        if (!$rekam) {
+            return redirect()->route('rekam.tambah', ['pasienid' => $pasienId])
+                ->with('info', 'Belum ada rekam medis untuk pasien ini. Silakan tambahkan rekam baru.');
+        }
+
+
         $tindakan = Tindakan::all();
         $kondisi_gigi = KondisiGigi::all();
         $pem_gigi = RekamGigi::where('pasien_id', $pasienId)->get();

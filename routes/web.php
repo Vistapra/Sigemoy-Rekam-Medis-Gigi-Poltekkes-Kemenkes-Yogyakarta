@@ -34,8 +34,6 @@ Route::get('/loginterapis', [AuthController::class, 'terapis_gigi'])->name('logi
 Route::post('/login', [AuthController::class, 'auth'])->name('login.auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/odontogram/{id}', [RekamGigiController::class, 'odontogram'])->name('odontogram');
-
 Route::get('/loaddata', [RekamPemeriksaanController::class, 'insertToTableNew'])->name('loaddata');
 
 Route::group(['middleware' => 'auth'], function () {
