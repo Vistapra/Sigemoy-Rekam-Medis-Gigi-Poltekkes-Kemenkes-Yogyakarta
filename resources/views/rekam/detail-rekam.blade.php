@@ -235,6 +235,7 @@
             </div>
         @endif
 
+        @if (auth()->user()->role_display() == 'Admin' || auth()->user()->role_display() == 'Dokter')
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
@@ -342,6 +343,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <div class="col-xl-12 mt-4">
             <div class="card">
@@ -374,7 +376,7 @@
                             </div>
                         @endforeach
                     @else
-                        <p>Pasien belum mengisi kuisioner.</p>
+                        <p>Tidak ada data kuisioner Survey Pasien.</p>
                     @endif
                 </div>
             </div>

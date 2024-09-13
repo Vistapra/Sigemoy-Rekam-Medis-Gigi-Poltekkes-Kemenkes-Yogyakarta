@@ -83,7 +83,7 @@
                     </a>
                     <ul aria-expanded="false">
                         <li><a href="{{ route('tindakan.index') }}">Pilihan Edukasi</a></li>
-                        <li><a href="{{ route('icd.index') }}">ICD</a></li>
+                        <li><a href="{{ route('icd.index') }}">Diagnosa/Icd</a></li>
                         <li><a href="{{ route('kuisioner.index') }}">Kuisioner</a></li>
                         <li><a href="{{ route('rekammediskader.index') }}">Kondisi Gigi</a></li>
                     </ul>

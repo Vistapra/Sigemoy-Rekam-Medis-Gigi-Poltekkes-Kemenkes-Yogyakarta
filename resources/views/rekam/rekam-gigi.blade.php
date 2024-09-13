@@ -1,4 +1,3 @@
-//rekam-gigi.blade.php
 @extends('layout.apps')
 
 @section('content')
