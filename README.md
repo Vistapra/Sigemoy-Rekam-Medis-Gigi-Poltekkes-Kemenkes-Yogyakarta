@@ -177,4 +177,4 @@ Contributions to the Sigemoy Rekam Medis Gigi project are welcome. Please follow
 
 ---
 
-For more information or support, please contact [insert contact information].
+For more information or support, please contact [@vista_pramudya].
