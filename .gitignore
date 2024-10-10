@@ -1,0 +1,6 @@
+.env
+storage
+vendor
+log
+.log
+logs
