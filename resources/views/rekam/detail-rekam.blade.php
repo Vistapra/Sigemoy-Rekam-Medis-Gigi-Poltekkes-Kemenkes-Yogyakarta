@@ -722,6 +722,9 @@
                     <div class="card-header-right">
                         @if($pasien->jawabanPasien->isNotEmpty())
                             <span class="badge badge-success">{{ $pasien->jawabanPasien->count() }} Jawaban</span>
+                            <a href="{{ route('kuisioner.jawabKuisioner', $pasien->id) }}" class="btn btn-warning btn-sm ml-2">
+                                <i class="fas fa-edit"></i> Edit Survey
+                            </a>
                         @else
                             <a href="{{ route('kuisioner.jawabKuisioner', $pasien->id) }}" class="btn btn-info btn-sm">
                                 <i class="fas fa-plus"></i> Isi Survey
@@ -731,42 +734,156 @@
                 </div>
                 <div class="card-body">
                     @if ($pasien->jawabanPasien->isNotEmpty())
-                        @foreach ($pasien->jawabanPasien->groupBy('pertanyaan.kategori.nama_kategori') as $kategori => $jawaban)
+                        @php
+                            // Group jawaban berdasarkan kategori dan pertanyaan
+                            $groupedAnswers = $pasien->jawabanPasien->groupBy(function($item) {
+                                return $item->pertanyaan->kategori->nama_kategori;
+                            })->map(function($kategoriAnswers) {
+                                return $kategoriAnswers->groupBy('pertanyaan_id');
+                            });
+                        @endphp
+                        
+                        @foreach ($groupedAnswers as $namaKategori => $pertanyaanGroup)
                             <div class="kategori-section mb-4">
                                 <h5 class="mt-4 mb-3">
                                     <i class="fas fa-folder text-primary mr-2"></i>
-                                    {{ $kategori }}
-                                    <span class="badge badge-primary ml-2">{{ $jawaban->count() }} Pertanyaan</span>
+                                    {{ $namaKategori }}
+                                    <span class="badge badge-primary ml-2">{{ $pertanyaanGroup->count() }} Pertanyaan</span>
                                 </h5>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th width="5%">No</th>
-                                                <th width="40%">Pertanyaan</th>
-                                                <th width="25%">Jawaban</th>
-                                                <th width="30%">Keterangan</th>
+                                                <th width="35%">Pertanyaan</th>
+                                                <th width="10%">Jenis</th>
+                                                <th width="30%">Jawaban</th>
+                                                <th width="20%">Keterangan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($jawaban as $index => $item)
+                                            @foreach ($pertanyaanGroup as $pertanyaanId => $jawabans)
+                                                @php
+                                                    $firstAnswer = $jawabans->first();
+                                                    $pertanyaan = $firstAnswer->pertanyaan;
+                                                @endphp
                                                 <tr>
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $item->pertanyaan->teks_pertanyaan }}</td>
+                                                    <td>{{ $loop->iteration }}</td>
                                                     <td>
-                                                        @if($item->opsiJawaban)
-                                                            <span class="badge badge-success">{{ $item->opsiJawaban->teks_opsi }}</span>
+                                                        <div class="question-text">
+                                                            {{ $pertanyaan->teks_pertanyaan }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @if($pertanyaan->jenis_jawaban == 'single_choice')
+                                                            <span class="badge badge-primary">
+                                                                <i class="fas fa-dot-circle mr-1"></i>
+                                                                Pilih Satu
+                                                            </span>
                                                         @else
-                                                            <span class="badge badge-secondary">Tidak dijawab</span>
+                                                            <span class="badge badge-success">
+                                                                <i class="fas fa-check-square mr-1"></i>
+                                                                Pilih Banyak
+                                                            </span>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if($item->keterangan)
+                                                        <div class="answer-container">
+                                                            @if($pertanyaan->jenis_jawaban == 'single_choice')
+                                                                <!-- Single Choice Answer -->
+                                                                @if($firstAnswer->opsiJawaban)
+                                                                    <span class="badge badge-success answer-badge">
+                                                                        <i class="fas fa-check mr-1"></i>
+                                                                        {{ $firstAnswer->opsiJawaban->teks_opsi }}
+                                                                    </span>
+                                                                @else
+                                                                    <span class="badge badge-secondary">
+                                                                        <i class="fas fa-times mr-1"></i>
+                                                                        Tidak dijawab
+                                                                    </span>
+                                                                @endif
+                                                            @else
+                                                                <!-- Multiple Choice Answers -->
+                                                                <div class="multiple-answers">
+                                                                    @forelse($jawabans->where('opsi_jawaban_id', '!=', null) as $jawaban)
+                                                                        <span class="badge badge-success answer-badge mb-1">
+                                                                            <i class="fas fa-check mr-1"></i>
+                                                                            {{ $jawaban->opsiJawaban->teks_opsi }}
+                                                                        </span>
+                                                                        @if(!$loop->last)<br>@endif
+                                                                    @empty
+                                                                        <span class="badge badge-secondary">
+                                                                            <i class="fas fa-times mr-1"></i>
+                                                                            Tidak dijawab
+                                                                        </span>
+                                                                    @endforelse
+                                                                </div>
+                                                                
+                                                                @if($jawabans->where('opsi_jawaban_id', '!=', null)->count() > 1)
+                                                                    <div class="mt-2">
+                                                                        <small class="text-info">
+                                                                            <i class="fas fa-info-circle mr-1"></i>
+                                                                            {{ $jawabans->where('opsi_jawaban_id', '!=', null)->count() }} pilihan dipilih
+                                                                        </small>
+                                                                    </div>
+                                                                @endif
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @php
+                                                            // Ambil keterangan dari jawaban pertama yang memiliki keterangan
+                                                            $keterangan = $jawabans->whereNotNull('keterangan')->first()->keterangan ?? null;
+                                                        @endphp
+                                                        
+                                                        @if($keterangan)
                                                             <div class="keterangan-content">
-                                                                {{ $item->keterangan }}
+                                                                <div class="keterangan-text">
+                                                                    {{ Str::limit($keterangan, 50) }}
+                                                                </div>
+                                                                @if(strlen($keterangan) > 50)
+                                                                    <button type="button" class="btn btn-link btn-sm p-0 mt-1" 
+                                                                            data-toggle="modal" 
+                                                                            data-target="#keteranganModal{{ $pertanyaanId }}">
+                                                                        <small>Lihat selengkapnya...</small>
+                                                                    </button>
+                                                                    
+                                                                    <!-- Modal untuk Keterangan Lengkap -->
+                                                                    <div class="modal fade" id="keteranganModal{{ $pertanyaanId }}" tabindex="-1" role="dialog">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title">
+                                                                                        <i class="fas fa-comment-alt mr-2"></i>
+                                                                                        Keterangan Lengkap
+                                                                                    </h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal">
+                                                                                        <span>&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <h6 class="mb-3">Pertanyaan:</h6>
+                                                                                    <p class="border-left border-primary pl-3 mb-3">
+                                                                                        {{ $pertanyaan->teks_pertanyaan }}
+                                                                                    </p>
+                                                                                    <h6 class="mb-3">Keterangan:</h6>
+                                                                                    <div class="bg-light p-3 rounded">
+                                                                                        {{ $keterangan }}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         @else
-                                                            <span class="text-muted">Tidak ada keterangan</span>
+                                                            <span class="text-muted">
+                                                                <i class="fas fa-minus mr-1"></i>
+                                                                Tidak ada keterangan
+                                                            </span>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -776,6 +893,46 @@
                                 </div>
                             </div>
                         @endforeach
+                        
+                        <!-- Summary Statistics -->
+                        <div class="row mt-4">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-poll fa-2x mb-2"></i>
+                                        <h4>{{ $groupedAnswers->sum(function($group) { return $group->count(); }) }}</h4>
+                                        <small>Total Pertanyaan Dijawab</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-check-square fa-2x mb-2"></i>
+                                        <h4>{{ $pasien->jawabanPasien->where('pertanyaan.jenis_jawaban', 'multiple_choice')->count() }}</h4>
+                                        <small>Multiple Choice</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-dot-circle fa-2x mb-2"></i>
+                                        <h4>{{ $pasien->jawabanPasien->where('pertanyaan.jenis_jawaban', 'single_choice')->count() }}</h4>
+                                        <small>Single Choice</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-comment fa-2x mb-2"></i>
+                                        <h4>{{ $pasien->jawabanPasien->whereNotNull('keterangan')->count() }}</h4>
+                                        <small>Dengan Keterangan</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @else
                         <div class="text-center py-5">
                             <i class="fas fa-poll fa-5x text-muted mb-3"></i>
@@ -1062,6 +1219,142 @@
 
         .table-borderless td {
             border: none !important;
+        }
+        .question-text {
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .answer-container {
+            min-height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .answer-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            margin-right: 5px;
+            margin-bottom: 3px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .multiple-answers {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .multiple-answers .answer-badge {
+            align-self: flex-start;
+        }
+
+        .keterangan-content {
+            max-width: 200px;
+        }
+
+        .keterangan-text {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            font-size: 13px;
+            line-height: 1.3;
+        }
+
+        .kategori-section {
+            border-left: 4px solid #007bff;
+            padding-left: 15px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        .kategori-section h5 {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+        .btn-link.btn-sm {
+            font-size: 11px;
+            text-decoration: none;
+        }
+
+        .btn-link.btn-sm:hover {
+            text-decoration: underline;
+        }
+
+        /* Summary Cards Styles */
+        .card.bg-primary, .card.bg-success, .card.bg-info, .card.bg-warning {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .card.bg-primary:hover, .card.bg-success:hover, .card.bg-info:hover, .card.bg-warning:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .modal-header .close {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .modal-header .close:hover {
+            opacity: 1;
+        }
+
+        /* Badge improvements */
+        .badge {
+            font-weight: 500;
+        }
+
+        .badge i {
+            font-size: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .kategori-section {
+                padding: 15px 10px;
+                margin-left: -15px;
+                margin-right: -15px;
+            }
+            
+            .answer-container {
+                min-height: auto;
+            }
+            
+            .multiple-answers .answer-badge {
+                font-size: 11px;
+                padding: 3px 6px;
+            }
+            
+            .keterangan-content {
+                max-width: 150px;
+            }
+            
+            .table-responsive {
+                font-size: 13px;
+            }
         }
     </style>
 @endsection
