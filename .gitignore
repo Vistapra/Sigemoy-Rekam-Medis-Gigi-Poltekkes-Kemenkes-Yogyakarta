@@ -1,0 +1,22 @@
+# Folder dependencies
+/vendor/
+/node_modules/
+
+# File log
+*.log
+
+# File konfigurasi lingkungan
+#.env
+
+# Folder build output
+/public/storage/
+
+# File spesifik editor dan IDE
+/.vscode/
+/.idea/
+
+# Sistem operasi
+.DS_Store
+
+# File yang mungkin dibuat secara otomatis
+*.phpunit.result.cache

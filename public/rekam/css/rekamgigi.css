@@ -1,0 +1,29 @@
+body .odontogram-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    cursor: move;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+body #odontograma svg {
+    transition: transform 0.3s ease;
+}
+
+body .btn-light {
+    margin-right: 5px;
+}
+
+body .btn-light i {
+    font-size: 1.2em;
+}
+
+body .form-label {
+    font-weight: bold;
+}
+
+body #table-tindakan th {
+    background-color: #f8f9fa;
+}
