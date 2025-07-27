@@ -334,30 +334,22 @@ jQuery(function() {
         try {
             var catatanDisplay = formatCatatanForDisplay(catatan_perencanaan, catatan_tindakan, catatan_evaluasi, catatan_diagnosa);
             
-            var markup = '<tr>' +
-                '<td>' + (element_gigi || '-') + '<input type="hidden" name="element_gigi[]" value="' +
-                (element_gigi || '') + '" /></td>' +
-                '<td>' + kondisi_gigi + '<input type="hidden" name="pemeriksaan[]" value="' +
-                kondisi_gigi + '" /></td>' +
-                '<td>' + (diagnosa || '-') + '<input type="hidden" name="diagnosa[]" value="' + (
-                    diagnosa || '') +
-                '" /></td>' +
-                '<td>' + (tindakan || '-') + '<input type="hidden" name="tindakan[]" value="' + (
-                    tindakan || '') +
-                '" /></td>' +
-                '<td>' + catatanDisplay +
+            var rowData = [
+                (element_gigi || '-') + '<input type="hidden" name="element_gigi[]" value="' + (element_gigi || '') + '" />',
+                kondisi_gigi + '<input type="hidden" name="pemeriksaan[]" value="' + kondisi_gigi + '" />',
+                (diagnosa || '-') + '<input type="hidden" name="diagnosa[]" value="' + (diagnosa || '') + '" />',
+                (tindakan || '-') + '<input type="hidden" name="tindakan[]" value="' + (tindakan || '') + '" />',
+                catatanDisplay +
                 '<input type="hidden" name="catatan_perencanaan[]" value="' + (catatan_perencanaan || '') + '" />' +
                 '<input type="hidden" name="catatan_tindakan[]" value="' + (catatan_tindakan || '') + '" />' +
                 '<input type="hidden" name="catatan_evaluasi[]" value="' + (catatan_evaluasi || '') + '" />' +
-                '<input type="hidden" name="catatan_diagnosa[]" value="' + (catatan_diagnosa || '') + '" />' +
-                '</td>' +
-                '<td>' +
+                '<input type="hidden" name="catatan_diagnosa[]" value="' + (catatan_diagnosa || '') + '" />',
                 '<button type="button" class="btn btn-warning btn-sm btnEdit"><i class="fa fa-edit"></i></button> ' +
-                '<button type="button" class="btn btn-danger btn-sm btnDelete"><i class="fa fa-trash"></i></button>' +
-                '</td>' +
-                '</tr>';
+                '<button type="button" class="btn btn-danger btn-sm btnDelete"><i class="fa fa-trash"></i></button>'
+            ];
 
-            $("#table-tindakan tbody").append(markup);
+            // Add row to DataTable
+            tableTindakan.row.add(rowData).draw();
 
             // Reset form fields after adding
             $("#element_gigi").val('');
@@ -390,9 +382,19 @@ jQuery(function() {
     };
 
     function updateOdontogram() {
-        $("#table-tindakan tbody tr").each(function() {
-            var element_gigi = $(this).find('input[name="element_gigi[]"]').val();
-            var kondisi_gigi = $(this).find('input[name="pemeriksaan[]"]').val();
+        // Get data from DataTable instead of DOM
+        var tableData = tableTindakan.rows().data();
+        
+        tableData.each(function(rowData, index) {
+            // Extract element_gigi from the HTML string
+            var elementGigiHtml = rowData[0];
+            var elementGigiMatch = elementGigiHtml.match(/value="([^"]*)"/) || ['', ''];
+            var element_gigi = elementGigiMatch[1];
+            
+            // Extract kondisi_gigi from the HTML string
+            var kondisiGigiHtml = rowData[1];
+            var kondisiGigiMatch = kondisiGigiHtml.match(/value="([^"]*)"/) || ['', ''];
+            var kondisi_gigi = kondisiGigiMatch[1];
 
             var diente = ko.utils.arrayFirst(vm.dientes(), function(item) {
                 return item.id == element_gigi;
@@ -454,8 +456,12 @@ jQuery(function() {
     });
 
     // Initialize DataTable for treatment history
-    $('#table-tindakan').DataTable({
+    var tableTindakan = $('#table-tindakan').DataTable({
         responsive: true,
+        paging: false,
+        searching: false,
+        info: false,
+        ordering: false,
         language: {
             "emptyTable": "Tidak ada data yang tersedia pada tabel ini",
             "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
@@ -501,7 +507,7 @@ jQuery(function() {
     $('#rekamGigiForm').submit(function(e) {
         e.preventDefault();
 
-        if ($("#table-tindakan tbody tr").length === 0) {
+        if (tableTindakan.rows().count() === 0) {
             Swal.fire({
                 type: 'error',
                 title: 'Oops...',
@@ -521,10 +527,63 @@ jQuery(function() {
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.value) {
+                // Create form data from DataTable
+                var formData = new FormData();
+                formData.append('_token', $('input[name="_token"]').val());
+                
+                var tableData = tableTindakan.rows().data();
+                var elementGigi = [];
+                var pemeriksaan = [];
+                var diagnosa = [];
+                var tindakan = [];
+                var catatanPerencanaan = [];
+                var catatanTindakan = [];
+                var catatanEvaluasi = [];
+                var catatanDiagnosa = [];
+                
+                tableData.each(function(rowData, index) {
+                    // Extract values from HTML
+                    var elementGigiMatch = rowData[0].match(/value="([^"]*)"/) || ['', ''];
+                    elementGigi.push(elementGigiMatch[1]);
+                    
+                    var pemeriksaanMatch = rowData[1].match(/value="([^"]*)"/) || ['', ''];
+                    pemeriksaan.push(pemeriksaanMatch[1]);
+                    
+                    var diagnosaMatch = rowData[2].match(/value="([^"]*)"/) || ['', ''];
+                    diagnosa.push(diagnosaMatch[1]);
+                    
+                    var tindakanMatch = rowData[3].match(/value="([^"]*)"/) || ['', ''];
+                    tindakan.push(tindakanMatch[1]);
+                    
+                    var catatanPerencanaanMatch = rowData[4].match(/name="catatan_perencanaan\[\]" value="([^"]*)"/) || ['', ''];
+                    catatanPerencanaan.push(catatanPerencanaanMatch[1]);
+                    
+                    var catatanTindakanMatch = rowData[4].match(/name="catatan_tindakan\[\]" value="([^"]*)"/) || ['', ''];
+                    catatanTindakan.push(catatanTindakanMatch[1]);
+                    
+                    var catatanEvaluasiMatch = rowData[4].match(/name="catatan_evaluasi\[\]" value="([^"]*)"/) || ['', ''];
+                    catatanEvaluasi.push(catatanEvaluasiMatch[1]);
+                    
+                    var catatanDiagnosaMatch = rowData[4].match(/name="catatan_diagnosa\[\]" value="([^"]*)"/) || ['', ''];
+                    catatanDiagnosa.push(catatanDiagnosaMatch[1]);
+                });
+                
+                // Append arrays to FormData
+                elementGigi.forEach((val, index) => formData.append('element_gigi[]', val));
+                pemeriksaan.forEach((val, index) => formData.append('pemeriksaan[]', val));
+                diagnosa.forEach((val, index) => formData.append('diagnosa[]', val));
+                tindakan.forEach((val, index) => formData.append('tindakan[]', val));
+                catatanPerencanaan.forEach((val, index) => formData.append('catatan_perencanaan[]', val));
+                catatanTindakan.forEach((val, index) => formData.append('catatan_tindakan[]', val));
+                catatanEvaluasi.forEach((val, index) => formData.append('catatan_evaluasi[]', val));
+                catatanDiagnosa.forEach((val, index) => formData.append('catatan_diagnosa[]', val));
+
                 $.ajax({
                     url: $(this).attr('action'),
                     method: 'POST',
-                    data: $(this).serialize(),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         Swal.fire({
                             type: 'success',
@@ -549,7 +608,7 @@ jQuery(function() {
     // Delete functionality with catatan handling
     $("#table-tindakan").on('click', '.btnDelete', function(e) {
         e.preventDefault();
-        var row = $(this).closest('tr');
+        var row = tableTindakan.row($(this).closest('tr'));
 
         Swal.fire({
             title: 'Anda yakin?',
@@ -562,7 +621,7 @@ jQuery(function() {
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.value) {
-                row.remove();
+                row.remove().draw();
                 updateOdontogram();
                 Swal.fire('Terhapus!', 'Data telah dihapus.', 'success');
             }
@@ -572,19 +631,38 @@ jQuery(function() {
     // Edit functionality with catatan handling
     $("#table-tindakan").on('click', '.btnEdit', function(e) {
         e.preventDefault();
-        var row = $(this).closest('tr');
+        var row = tableTindakan.row($(this).closest('tr'));
         editRow(row);
     });
 
     function editRow(row) {
-        var elementGigi = row.find('input[name="element_gigi[]"]').val();
-        var pemeriksaan = row.find('input[name="pemeriksaan[]"]').val();
-        var diagnosa = row.find('input[name="diagnosa[]"]').val();
-        var tindakan = row.find('input[name="tindakan[]"]').val();
-        var catatanPerencanaan = row.find('input[name="catatan_perencanaan[]"]').val();
-        var catatanTindakan = row.find('input[name="catatan_tindakan[]"]').val();
-        var catatanEvaluasi = row.find('input[name="catatan_evaluasi[]"]').val();
-        var catatanDiagnosa = row.find('input[name="catatan_diagnosa[]"]').val();
+        var rowData = row.data();
+        
+        // Extract values from HTML strings
+        var elementGigiMatch = rowData[0].match(/value="([^"]*)"/) || ['', ''];
+        var elementGigi = elementGigiMatch[1];
+        
+        var pemeriksaanMatch = rowData[1].match(/value="([^"]*)"/) || ['', ''];
+        var pemeriksaan = pemeriksaanMatch[1];
+        
+        var diagnosaMatch = rowData[2].match(/value="([^"]*)"/) || ['', ''];
+        var diagnosa = diagnosaMatch[1];
+        
+        var tindakanMatch = rowData[3].match(/value="([^"]*)"/) || ['', ''];
+        var tindakan = tindakanMatch[1];
+        
+        // Extract catatan values
+        var catatanPerencanaanMatch = rowData[4].match(/name="catatan_perencanaan\[\]" value="([^"]*)"/) || ['', ''];
+        var catatanPerencanaan = catatanPerencanaanMatch[1];
+        
+        var catatanTindakanMatch = rowData[4].match(/name="catatan_tindakan\[\]" value="([^"]*)"/) || ['', ''];
+        var catatanTindakan = catatanTindakanMatch[1];
+        
+        var catatanEvaluasiMatch = rowData[4].match(/name="catatan_evaluasi\[\]" value="([^"]*)"/) || ['', ''];
+        var catatanEvaluasi = catatanEvaluasiMatch[1];
+        
+        var catatanDiagnosaMatch = rowData[4].match(/name="catatan_diagnosa\[\]" value="([^"]*)"/) || ['', ''];
+        var catatanDiagnosa = catatanDiagnosaMatch[1];
 
         // Fill form with existing data
         $("#element_gigi").val(elementGigi);
@@ -596,8 +674,8 @@ jQuery(function() {
         $("#catatan_evaluasi").val(catatanEvaluasi);
         $("#catatan_diagnosa").val(catatanDiagnosa);
 
-        // Remove old row
-        row.remove();
+        // Remove old row from DataTable
+        row.remove().draw();
 
         // Update odontogram
         updateOdontogram();
