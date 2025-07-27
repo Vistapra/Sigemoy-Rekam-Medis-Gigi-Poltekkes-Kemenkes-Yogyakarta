@@ -7,7 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class RekamGigi extends Model
 {
     protected $table = "rekam_gigi";
-    protected $fillable = ["rekam_id", "pasien_id", "user_id", "elemen_gigi", "pemeriksaan", "diagnosa", "tindakan"];
+    protected $fillable = [
+        "rekam_id", 
+        "pasien_id", 
+        "user_id", 
+        "elemen_gigi", 
+        "pemeriksaan", 
+        "diagnosa", 
+        "tindakan",
+        "catatan_perencanaan",
+        "catatan_tindakan",
+        "catatan_evaluasi",
+        "catatan_diagnosa"
+    ];
 
     function rekam()
     {
