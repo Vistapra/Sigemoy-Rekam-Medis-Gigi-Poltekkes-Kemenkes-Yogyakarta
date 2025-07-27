@@ -289,15 +289,67 @@ class KuisionerController extends Controller
 
     public function simpanJawaban(Request $request, $pasien_id)
     {
+        // Log data yang diterima untuk debugging
+        Log::info('Data jawaban yang diterima:', $request->all());
+
+        // Custom validation untuk menangani perbedaan struktur single choice dan multiple choice
         $validator = Validator::make($request->all(), [
             'jawaban' => 'nullable|array',
             'jawaban.*' => 'nullable|array',
-            'jawaban.*.opsi_jawaban_id' => 'nullable|array',
-            'jawaban.*.opsi_jawaban_id.*' => 'nullable|exists:opsi_jawaban,id',
             'jawaban.*.keterangan' => 'nullable|string|max:1000',
         ]);
 
+        // Validasi khusus untuk opsi jawaban
+        $validator->after(function ($validator) use ($request) {
+            if ($request->has('jawaban')) {
+                foreach ($request->jawaban as $pertanyaan_id => $jawaban) {
+                    // Cek apakah pertanyaan ada
+                    $pertanyaan = Pertanyaan::find($pertanyaan_id);
+                    if (!$pertanyaan) {
+                        $validator->errors()->add("jawaban.{$pertanyaan_id}", 'Pertanyaan tidak ditemukan.');
+                        continue;
+                    }
+
+                    // Validasi opsi jawaban jika ada
+                    if (isset($jawaban['opsi_jawaban_id'])) {
+                        if ($pertanyaan->jenis_jawaban == 'single_choice') {
+                            // Single choice: harus berupa string/integer
+                            if (is_array($jawaban['opsi_jawaban_id'])) {
+                                $validator->errors()->add("jawaban.{$pertanyaan_id}.opsi_jawaban_id", 'Single choice tidak boleh berupa array.');
+                            } else {
+                                // Validasi apakah opsi jawaban ada
+                                $opsi = OpsiJawaban::where('id', $jawaban['opsi_jawaban_id'])
+                                    ->where('pertanyaan_id', $pertanyaan_id)
+                                    ->first();
+                                if (!$opsi) {
+                                    $validator->errors()->add("jawaban.{$pertanyaan_id}.opsi_jawaban_id", 'Opsi jawaban tidak valid.');
+                                }
+                            }
+                        } else {
+                            // Multiple choice: harus berupa array
+                            if (!is_array($jawaban['opsi_jawaban_id'])) {
+                                $validator->errors()->add("jawaban.{$pertanyaan_id}.opsi_jawaban_id", 'Multiple choice harus berupa array.');
+                            } else {
+                                // Validasi setiap opsi jawaban
+                                foreach ($jawaban['opsi_jawaban_id'] as $opsi_id) {
+                                    if (!empty($opsi_id)) {
+                                        $opsi = OpsiJawaban::where('id', $opsi_id)
+                                            ->where('pertanyaan_id', $pertanyaan_id)
+                                            ->first();
+                                        if (!$opsi) {
+                                            $validator->errors()->add("jawaban.{$pertanyaan_id}.opsi_jawaban_id", "Opsi jawaban {$opsi_id} tidak valid.");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         if ($validator->fails()) {
+            Log::error('Validasi gagal:', $validator->errors()->toArray());
             return response()->json(['message' => 'Validasi gagal', 'errors' => $validator->errors()], 422);
         }
 
@@ -315,36 +367,37 @@ class KuisionerController extends Controller
                         $pertanyaan = Pertanyaan::findOrFail($pertanyaan_id);
                         $keterangan = $jawaban['keterangan'] ?? null;
                         
-                        // Cek jenis jawaban
-                        if ($pertanyaan->isMultipleChoice()) {
-                            // Multiple choice - jawaban bisa berupa array
-                            $opsi_jawaban_ids = is_array($jawaban['opsi_jawaban_id']) 
-                                ? $jawaban['opsi_jawaban_id'] 
-                                : [$jawaban['opsi_jawaban_id']];
-                            
-                            foreach ($opsi_jawaban_ids as $opsi_jawaban_id) {
-                                if (!empty($opsi_jawaban_id)) {
-                                    JawabanPasien::create([
-                                        'pasien_id' => $pasien_id,
-                                        'pertanyaan_id' => $pertanyaan_id,
-                                        'opsi_jawaban_id' => $opsi_jawaban_id,
-                                        'keterangan' => $keterangan
-                                    ]);
+                        Log::info("Memproses pertanyaan {$pertanyaan_id}", [
+                            'jenis' => $pertanyaan->jenis_jawaban,
+                            'opsi_jawaban_id' => $jawaban['opsi_jawaban_id'],
+                            'keterangan' => $keterangan
+                        ]);
+                        
+                        if ($pertanyaan->jenis_jawaban == 'multiple_choice') {
+                            // Multiple choice - jawaban harus berupa array
+                            if (is_array($jawaban['opsi_jawaban_id'])) {
+                                foreach ($jawaban['opsi_jawaban_id'] as $opsi_jawaban_id) {
+                                    if (!empty($opsi_jawaban_id)) {
+                                        JawabanPasien::create([
+                                            'pasien_id' => $pasien_id,
+                                            'pertanyaan_id' => $pertanyaan_id,
+                                            'opsi_jawaban_id' => $opsi_jawaban_id,
+                                            'keterangan' => $keterangan
+                                        ]);
+                                        Log::info("Jawaban multiple choice disimpan: {$opsi_jawaban_id}");
+                                    }
                                 }
                             }
                         } else {
-                            // Single choice - hanya satu jawaban
-                            $opsi_jawaban_id = is_array($jawaban['opsi_jawaban_id']) 
-                                ? $jawaban['opsi_jawaban_id'][0] 
-                                : $jawaban['opsi_jawaban_id'];
-                            
-                            if (!empty($opsi_jawaban_id)) {
+                            // Single choice - jawaban berupa string/integer
+                            if (!is_array($jawaban['opsi_jawaban_id']) && !empty($jawaban['opsi_jawaban_id'])) {
                                 JawabanPasien::create([
                                     'pasien_id' => $pasien_id,
                                     'pertanyaan_id' => $pertanyaan_id,
-                                    'opsi_jawaban_id' => $opsi_jawaban_id,
+                                    'opsi_jawaban_id' => $jawaban['opsi_jawaban_id'],
                                     'keterangan' => $keterangan
                                 ]);
+                                Log::info("Jawaban single choice disimpan: {$jawaban['opsi_jawaban_id']}");
                             }
                         }
                     }
@@ -374,9 +427,11 @@ class KuisionerController extends Controller
 
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             DB::rollBack();
+            Log::error('Model tidak ditemukan:', ['error' => $e->getMessage()]);
             return response()->json(['message' => 'Data pasien atau pertanyaan tidak ditemukan.'], 404);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Error saat menyimpan jawaban:', ['error' => $e->getMessage()]);
             return response()->json(['message' => 'Terjadi kesalahan saat menyimpan jawaban. Silakan coba lagi.'], 500);
         }
     }
