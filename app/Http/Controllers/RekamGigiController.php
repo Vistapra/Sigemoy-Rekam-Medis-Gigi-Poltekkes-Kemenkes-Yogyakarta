@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KondisiGigi;
 use App\Models\Rekam;
-use App\Models\RekamGigi;
-use App\Models\Tindakan;
 use App\Models\Pasien;
+use App\Models\Tindakan;
+use App\Models\RekamGigi;
+use App\Models\KondisiGigi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,43 +26,82 @@ class RekamGigiController extends Controller
 
     public function store(Request $request, $pasienId)
     {
-        if (!$request->has('element_gigi') || empty($request->element_gigi)) {
-            return redirect()->back()->with('gagal', 'Tambahkan dulu rincian pemeriksaan baru menyimpan data');
-        }
-
         try {
-            DB::transaction(function () use ($request, $pasienId) {
-                RekamGigi::where('pasien_id', $pasienId)->delete();
+            DB::beginTransaction();
 
-                $userId = auth()->id();
-                $rekam = Rekam::firstOrCreate(
-                    ['pasien_id' => $pasienId],
-                    [
-                        'tgl_rekam' => now(),
-                        'user_id' => $userId,
-                        'keluhan' => $request->keluhan ?? 'Tidak ada keluhan',
-                    ]
-                );
+            // Validasi input
+            $request->validate([
+                'element_gigi' => 'required|array',
+                'pemeriksaan' => 'required|array',
+                'diagnosa' => 'required|array',
+                'tindakan' => 'required|array',
+                'catatan_perencanaan' => 'nullable|array',
+                'catatan_tindakan' => 'nullable|array',
+                'catatan_evaluasi' => 'nullable|array',
+                'catatan_diagnosa' => 'nullable|array',
+            ]);
 
-                $rekamGigiData = array_map(function ($elementId, $pemeriksaan, $diagnosa, $tindakan) use ($pasienId, $userId, $rekam) {
-                    return [
-                        'pasien_id' => $pasienId,
-                        'user_id' => $userId,
-                        'rekam_id' => $rekam->id,
-                        'elemen_gigi' => $elementId,
-                        'pemeriksaan' => $pemeriksaan ?? null,
-                        'diagnosa' => $diagnosa ?? null,
-                        'tindakan' => $tindakan ?? null,
-                    ];
-                }, $request->element_gigi, $request->pemeriksaan ?? [], $request->diagnosa ?? [], $request->tindakan ?? []);
+            // Create new Rekam record
+            $rekam = Rekam::create([
+                'tgl_rekam' => date('Y-m-d'),
+                'pasien_id' => $pasienId,
+                'user_id' => auth()->id(),
+                'keluhan' => 'Pemeriksaan Gigi',
+                'no_rekam' => $this->generateNoRekam(),
+                'petugas_id' => auth()->id(),
+            ]);
 
-                RekamGigi::insert($rekamGigiData);
-            });
+            // Loop through each tooth data
+            $elementGigi = $request->input('element_gigi', []);
+            $pemeriksaan = $request->input('pemeriksaan', []);
+            $diagnosa = $request->input('diagnosa', []);
+            $tindakan = $request->input('tindakan', []);
+            $catatanPerencanaan = $request->input('catatan_perencanaan', []);
+            $catatanTindakan = $request->input('catatan_tindakan', []);
+            $catatanEvaluasi = $request->input('catatan_evaluasi', []);
+            $catatanDiagnosa = $request->input('catatan_diagnosa', []);
 
-            return redirect()->route('opsiview.opsiedukasi')->with('sukses', 'Rekam Gigi Berhasil ditambahkan');
+            for ($i = 0; $i < count($elementGigi); $i++) {
+                RekamGigi::create([
+                    'rekam_id' => $rekam->id,
+                    'pasien_id' => $pasienId,
+                    'user_id' => auth()->id(),
+                    'elemen_gigi' => $elementGigi[$i] ?? '',
+                    'pemeriksaan' => $pemeriksaan[$i] ?? '',
+                    'diagnosa' => $diagnosa[$i] ?? '',
+                    'tindakan' => $tindakan[$i] ?? '',
+                    'catatan_perencanaan' => $catatanPerencanaan[$i] ?? null,
+                    'catatan_tindakan' => $catatanTindakan[$i] ?? null,
+                    'catatan_evaluasi' => $catatanEvaluasi[$i] ?? null,
+                    'catatan_diagnosa' => $catatanDiagnosa[$i] ?? null,
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data rekam gigi berhasil disimpan',
+                'redirect_url' => route('opsiview.opsiedukasi')
+            ]);
         } catch (\Exception $e) {
-            return redirect()->route('rekam.gigi.add', $pasienId)->with('gagal', 'Data Gagal ditambahkan. Error: ' . $e->getMessage());
+            DB::rollback();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
+    }
+
+    // Method untuk generate nomor rekam medis
+    private function generateNoRekam()
+    {
+        $lastRekam = Rekam::orderBy('id', 'desc')->first();
+        $lastNumber = $lastRekam ? intval(substr($lastRekam->no_rekam, -6)) : 0;
+        $newNumber = $lastNumber + 1;
+
+        return 'RM' . date('Ymd') . str_pad($newNumber, 6, '0', STR_PAD_LEFT);
     }
 
     public function edit($pasienId)
@@ -89,37 +128,72 @@ class RekamGigiController extends Controller
     public function update(Request $request, $pasienId)
     {
         try {
-            DB::transaction(function () use ($request, $pasienId) {
-                RekamGigi::where('pasien_id', $pasienId)->delete();
+            DB::beginTransaction();
 
-                $userId = auth()->id();
-                $rekam = Rekam::updateOrCreate(
-                    ['pasien_id' => $pasienId],
-                    [
-                        'tgl_rekam' => now(),
-                        'user_id' => $userId,
-                        'keluhan' => $request->keluhan ?? 'Tidak ada keluhan',
-                    ]
-                );
+            // Validasi input
+            $request->validate([
+                'element_gigi' => 'required|array',
+                'pemeriksaan' => 'required|array',
+                'diagnosa' => 'required|array',
+                'tindakan' => 'required|array',
+                'catatan_perencanaan' => 'nullable|array',
+                'catatan_tindakan' => 'nullable|array',
+                'catatan_evaluasi' => 'nullable|array',
+                'catatan_diagnosa' => 'nullable|array',
+            ]);
 
-                $rekamGigiData = array_map(function ($elementId, $pemeriksaan, $diagnosa, $tindakan) use ($pasienId, $userId, $rekam) {
-                    return [
-                        'pasien_id' => $pasienId,
-                        'user_id' => $userId,
-                        'rekam_id' => $rekam->id,
-                        'elemen_gigi' => $elementId,
-                        'pemeriksaan' => $pemeriksaan ?? null,
-                        'diagnosa' => $diagnosa ?? null,
-                        'tindakan' => $tindakan ?? null,
-                    ];
-                }, $request->element_gigi, $request->pemeriksaan ?? [], $request->diagnosa ?? [], $request->tindakan ?? []);
+            // Find existing rekam for this patient (assuming latest one)
+            $rekam = Rekam::where('pasien_id', $pasienId)
+                ->orderBy('id', 'desc')
+                ->first();
 
-                RekamGigi::insert($rekamGigiData);
-            });
+            if (!$rekam) {
+                throw new \Exception('Rekam medis tidak ditemukan');
+            }
 
-            return redirect()->route('rekam.detail-rekam', $pasienId)->with('sukses', 'Data Rekam Gigi berhasil diperbarui');
+            // Delete existing rekam gigi records
+            RekamGigi::where('rekam_id', $rekam->id)->delete();
+
+            // Create new records
+            $elementGigi = $request->input('element_gigi', []);
+            $pemeriksaan = $request->input('pemeriksaan', []);
+            $diagnosa = $request->input('diagnosa', []);
+            $tindakan = $request->input('tindakan', []);
+            $catatanPerencanaan = $request->input('catatan_perencanaan', []);
+            $catatanTindakan = $request->input('catatan_tindakan', []);
+            $catatanEvaluasi = $request->input('catatan_evaluasi', []);
+            $catatanDiagnosa = $request->input('catatan_diagnosa', []);
+
+            for ($i = 0; $i < count($elementGigi); $i++) {
+                RekamGigi::create([
+                    'rekam_id' => $rekam->id,
+                    'pasien_id' => $pasienId,
+                    'user_id' => auth()->id(),
+                    'elemen_gigi' => $elementGigi[$i] ?? '',
+                    'pemeriksaan' => $pemeriksaan[$i] ?? '',
+                    'diagnosa' => $diagnosa[$i] ?? '',
+                    'tindakan' => $tindakan[$i] ?? '',
+                    'catatan_perencanaan' => $catatanPerencanaan[$i] ?? null,
+                    'catatan_tindakan' => $catatanTindakan[$i] ?? null,
+                    'catatan_evaluasi' => $catatanEvaluasi[$i] ?? null,
+                    'catatan_diagnosa' => $catatanDiagnosa[$i] ?? null,
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data rekam gigi berhasil diupdate',
+                'redirect_url' => route('opsiview.opsiedukasi')
+            ]);
         } catch (\Exception $e) {
-            return redirect()->route('rekam.gigi.edit', $pasienId)->with('gagal', 'Data Gagal diperbarui. Error: ' . $e->getMessage());
+            DB::rollback();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
     }
 

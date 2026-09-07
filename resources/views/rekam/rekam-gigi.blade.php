@@ -14,9 +14,6 @@
             <div class="col-xl-9">
                 <div class="card shadow">
                     <div class="card-body">
-                        {{-- <a href="{{ Route('rekam.gigi.odontogram', $rekam->pasien_id) }}" class="btn btn-info btn-sm mb-3">
-                                <i class="fa fa-eye"></i> Lihat Riwayat Odontogram
-                            </a> --}}
                         <div class="mb-3">
                             <button id="zoomIn" class="btn btn-sm btn-light"><i class="fas fa-search-plus"></i></button>
                             <button id="zoomOut" class="btn btn-sm btn-light"><i class="fas fa-search-minus"></i></button>
@@ -130,6 +127,42 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Catatan Section -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3"><i class="fas fa-sticky-note"></i> Catatan Detil</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="catatan_perencanaan">Perencanaan</label>
+                                <textarea id="catatan_perencanaan" class="form-control" rows="3" 
+                                    placeholder="Tuliskan perencanaan perawatan..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="catatan_tindakan">Tindakan</label>
+                                <textarea id="catatan_tindakan" class="form-control" rows="3" 
+                                    placeholder="Tuliskan tindakan yang dilakukan..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="catatan_evaluasi">Evaluasi</label>
+                                <textarea id="catatan_evaluasi" class="form-control" rows="3" 
+                                    placeholder="Tuliskan hasil evaluasi..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="catatan_diagnosa">Catatan Diagnosa</label>
+                                <textarea id="catatan_diagnosa" class="form-control" rows="3" 
+                                    placeholder="Tuliskan catatan tambahan diagnosa..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <button type="button" onclick="addRekam()" class="btn btn-primary">
@@ -151,22 +184,35 @@
                                     <th>Kondisi Gigi</th>
                                     <th>Diagnosa</th>
                                     <th>Pilihan Edukasi</th>
+                                    <th>Catatan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($pem_gigi as $row)
                                     <tr>
-                                        <td>{{ $row->elemen_gigi }}<input type="hidden" name="element_gigi[]"
-                                                value="{{ $row->elemen_gigi }}" />
+                                        <td>{{ $row->elemen_gigi }}
+                                            <input type="hidden" name="element_gigi[]" value="{{ $row->elemen_gigi }}" />
                                         </td>
-                                        <td>{{ $row->pemeriksaan }}<input type="hidden" name="pemeriksaan[]"
-                                                value="{{ $row->pemeriksaan }}" />
+                                        <td>{{ $row->pemeriksaan }}
+                                            <input type="hidden" name="pemeriksaan[]" value="{{ $row->pemeriksaan }}" />
                                         </td>
-                                        <td>{{ $row->diagnosa }}<input type="hidden" name="diagnosa[]"
-                                                value="{{ $row->diagnosa }}" /></td>
-                                        <td>{{ $row->tindakan }}<input type="hidden" name="tindakan[]"
-                                                value="{{ $row->tindakan }}" /></td>
+                                        <td>{{ $row->diagnosa }}
+                                            <input type="hidden" name="diagnosa[]" value="{{ $row->diagnosa }}" />
+                                        </td>
+                                        <td>{{ $row->tindakan }}
+                                            <input type="hidden" name="tindakan[]" value="{{ $row->tindakan }}" />
+                                        </td>
+                                        <td>
+                                            <small class="d-block"><strong>P:</strong> {{ $row->catatan_perencanaan ?? '-' }}</small>
+                                            <small class="d-block"><strong>T:</strong> {{ $row->catatan_tindakan ?? '-' }}</small>
+                                            <small class="d-block"><strong>E:</strong> {{ $row->catatan_evaluasi ?? '-' }}</small>
+                                            <small class="d-block"><strong>D:</strong> {{ $row->catatan_diagnosa ?? '-' }}</small>
+                                            <input type="hidden" name="catatan_perencanaan[]" value="{{ $row->catatan_perencanaan }}" />
+                                            <input type="hidden" name="catatan_tindakan[]" value="{{ $row->catatan_tindakan }}" />
+                                            <input type="hidden" name="catatan_evaluasi[]" value="{{ $row->catatan_evaluasi }}" />
+                                            <input type="hidden" name="catatan_diagnosa[]" value="{{ $row->catatan_diagnosa }}" />
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-warning btn-sm btnEdit">
                                                 <i class="fa fa-edit"></i>

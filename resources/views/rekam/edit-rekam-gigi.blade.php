@@ -128,6 +128,42 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Catatan Section - TAMBAHAN BARU -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-3"><i class="fas fa-sticky-note"></i> Catatan Detil</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="catatan_perencanaan">Perencanaan</label>
+                                <textarea id="catatan_perencanaan" class="form-control" rows="3" 
+                                    placeholder="Tuliskan perencanaan perawatan..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="catatan_tindakan">Tindakan</label>
+                                <textarea id="catatan_tindakan" class="form-control" rows="3" 
+                                    placeholder="Tuliskan tindakan yang dilakukan..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="catatan_evaluasi">Evaluasi</label>
+                                <textarea id="catatan_evaluasi" class="form-control" rows="3" 
+                                    placeholder="Tuliskan hasil evaluasi..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="catatan_diagnosa">Catatan Diagnosa</label>
+                                <textarea id="catatan_diagnosa" class="form-control" rows="3" 
+                                    placeholder="Tuliskan catatan tambahan diagnosa..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <button type="button" onclick="addRekam()" class="btn btn-primary">
@@ -149,6 +185,7 @@
                                     <th>Kondisi Gigi</th>
                                     <th>Diagnosa</th>
                                     <th>Pilihan Edukasi</th>
+                                    <th>Catatan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -163,6 +200,16 @@
                                                 value="{{ $row->diagnosa }}" /></td>
                                         <td>{{ $row->tindakan }}<input type="hidden" name="tindakan[]"
                                                 value="{{ $row->tindakan }}" /></td>
+                                        <td>
+                                            <small class="d-block"><strong>P:</strong> {{ $row->catatan_perencanaan ?? '-' }}</small>
+                                            <small class="d-block"><strong>T:</strong> {{ $row->catatan_tindakan ?? '-' }}</small>
+                                            <small class="d-block"><strong>E:</strong> {{ $row->catatan_evaluasi ?? '-' }}</small>
+                                            <small class="d-block"><strong>D:</strong> {{ $row->catatan_diagnosa ?? '-' }}</small>
+                                            <input type="hidden" name="catatan_perencanaan[]" value="{{ $row->catatan_perencanaan }}" />
+                                            <input type="hidden" name="catatan_tindakan[]" value="{{ $row->catatan_tindakan }}" />
+                                            <input type="hidden" name="catatan_evaluasi[]" value="{{ $row->catatan_evaluasi }}" />
+                                            <input type="hidden" name="catatan_diagnosa[]" value="{{ $row->catatan_diagnosa }}" />
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-warning btn-sm btnEdit">
                                                 <i class="fa fa-edit"></i>
@@ -501,11 +548,18 @@
 
             renderSvg();
 
+            // FUNGSI addRekam YANG DIPERBAIKI DENGAN CATATAN
             window.addRekam = function() {
                 var element_gigi = $("#element_gigi").val();
                 var tindakan = $("#tindakan").val();
                 var diagnosa = $("#diagnosa").val();
                 var kondisi_gigi = $("#kondisi_gigi").val();
+                
+                // Ambil nilai catatan
+                var catatan_perencanaan = $("#catatan_perencanaan").val();
+                var catatan_tindakan = $("#catatan_tindakan").val();
+                var catatan_evaluasi = $("#catatan_evaluasi").val();
+                var catatan_diagnosa = $("#catatan_diagnosa").val();
 
                 if (kondisi_gigi == "") {
                     Swal.fire({
@@ -547,6 +601,16 @@
                             tindakan || '') +
                         '" /></td>' +
                         '<td>' +
+                        '<small class="d-block"><strong>P:</strong> ' + (catatan_perencanaan || '-') + '</small>' +
+                        '<small class="d-block"><strong>T:</strong> ' + (catatan_tindakan || '-') + '</small>' +
+                        '<small class="d-block"><strong>E:</strong> ' + (catatan_evaluasi || '-') + '</small>' +
+                        '<small class="d-block"><strong>D:</strong> ' + (catatan_diagnosa || '-') + '</small>' +
+                        '<input type="hidden" name="catatan_perencanaan[]" value="' + (catatan_perencanaan || '') + '" />' +
+                        '<input type="hidden" name="catatan_tindakan[]" value="' + (catatan_tindakan || '') + '" />' +
+                        '<input type="hidden" name="catatan_evaluasi[]" value="' + (catatan_evaluasi || '') + '" />' +
+                        '<input type="hidden" name="catatan_diagnosa[]" value="' + (catatan_diagnosa || '') + '" />' +
+                        '</td>' +
+                        '<td>' +
                         '<button type="button" class="btn btn-warning btn-sm btnEdit"><i class="fa fa-edit"></i></button> ' +
                         '<button type="button" class="btn btn-danger btn-sm btnDelete"><i class="fa fa-trash"></i></button>' +
                         '</td>' +
@@ -559,6 +623,10 @@
                     $("#kondisi_gigi").val('');
                     $("#diagnosa").val('');
                     $("#tindakan").val('');
+                    $("#catatan_perencanaan").val('');
+                    $("#catatan_tindakan").val('');
+                    $("#catatan_evaluasi").val('');
+                    $("#catatan_diagnosa").val('');
 
                     // Update odontogram
                     updateOdontogram();
@@ -727,6 +795,42 @@
                 });
             });
 
+            // FUNGSI editRow YANG DIPERBAIKI DENGAN CATATAN
+            $("#table-tindakan").on('click', '.btnEdit', function(e) {
+                e.preventDefault();
+                var row = $(this).closest('tr');
+                editRow(row);
+            });
+
+            function editRow(row) {
+                var elementGigi = row.find('input[name="element_gigi[]"]').val();
+                var pemeriksaan = row.find('input[name="pemeriksaan[]"]').val();
+                var diagnosa = row.find('input[name="diagnosa[]"]').val();
+                var tindakan = row.find('input[name="tindakan[]"]').val();
+                
+                // Ambil nilai catatan yang ada
+                var catatanPerencanaan = row.find('input[name="catatan_perencanaan[]"]').val();
+                var catatanTindakan = row.find('input[name="catatan_tindakan[]"]').val();
+                var catatanEvaluasi = row.find('input[name="catatan_evaluasi[]"]').val();
+                var catatanDiagnosa = row.find('input[name="catatan_diagnosa[]"]').val();
+
+                // Isi form dengan data yang akan diedit
+                $("#element_gigi").val(elementGigi);
+                $("#kondisi_gigi").val(pemeriksaan);
+                $("#diagnosa").val(diagnosa);
+                $("#tindakan").val(tindakan);
+                $("#catatan_perencanaan").val(catatanPerencanaan);
+                $("#catatan_tindakan").val(catatanTindakan);
+                $("#catatan_evaluasi").val(catatanEvaluasi);
+                $("#catatan_diagnosa").val(catatanDiagnosa);
+
+                // Hapus baris lama
+                row.remove();
+
+                // Update odontogram
+                updateOdontogram();
+            }
+
             // Call updateOdontogram when treatments are added or removed
             $('button[onclick="addRekam()"]').click(updateOdontogram);
             $("#table-tindakan").on('click', '.btnDelete', function(e) {
@@ -750,31 +854,6 @@
                     }
                 });
             });
-
-            $("#table-tindakan").on('click', '.btnEdit', function(e) {
-                e.preventDefault();
-                var row = $(this).closest('tr');
-                editRow(row);
-            });
-
-            function editRow(row) {
-                var elementGigi = row.find('input[name="element_gigi[]"]').val();
-                var pemeriksaan = row.find('input[name="pemeriksaan[]"]').val();
-                var diagnosa = row.find('input[name="diagnosa[]"]').val();
-                var tindakan = row.find('input[name="tindakan[]"]').val();
-
-                $("#element_gigi").val(elementGigi);
-                $("#kondisi_gigi").val(pemeriksaan);
-                $("#diagnosa").val(diagnosa);
-                $("#tindakan").val(tindakan);
-
-                // Hapus baris lama
-                row.remove();
-
-                // Update odontogram
-                updateOdontogram();
-            }
-
 
             // Resize event listener
             $(window).resize(function() {

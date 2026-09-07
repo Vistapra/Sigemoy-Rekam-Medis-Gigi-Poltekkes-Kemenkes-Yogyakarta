@@ -1,0 +1,904 @@
+/* ============================================================================
+   SIGEMOY Custom Styles
+   Penyempurnaan frontend SIGEMOY — tambahan styling untuk section baru
+   dan perbaikan responsivitas. File ini TIDAK mengganti style.css.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   CSS Custom Properties (Design Tokens)
+   ---------------------------------------------------------------------------- */
+:root {
+    --sigemoy-primary: #1a73e8;
+    --sigemoy-primary-dark: #1557b0;
+    --sigemoy-secondary: #00bcd4;
+    --sigemoy-text: #333333;
+    --sigemoy-text-light: #666666;
+    --sigemoy-text-muted: #999999;
+    --sigemoy-bg-light: #f8f9fa;
+    --sigemoy-bg-section: #f5f7fa;
+    --sigemoy-white: #ffffff;
+    --sigemoy-border: #e8eef3;
+    --sigemoy-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --sigemoy-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+    --sigemoy-radius: 12px;
+    --sigemoy-radius-sm: 8px;
+    --sigemoy-transition: all 0.3s ease;
+}
+
+/* ----------------------------------------------------------------------------
+   Header Enhancements
+   ---------------------------------------------------------------------------- */
+.header-wrapper .header-top-area {
+    padding: 12px 0;
+}
+
+.sigemoy-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.sigemoy-brand-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sigemoy-brand-text {
+    font-family: 'Exo', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--sigemoy-primary);
+    letter-spacing: 1px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sigemoy-brand-tagline {
+    font-size: 0.7rem;
+    color: var(--sigemoy-text-muted);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Desktop Navigation */
+.header-navigation-area .main-menu > li {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.header-navigation-area .main-menu > li > a {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--sigemoy-text);
+    text-decoration: none;
+    transition: var(--sigemoy-transition);
+    border-radius: var(--sigemoy-radius-sm);
+}
+
+.header-navigation-area .main-menu > li > a:hover,
+.header-navigation-area .main-menu > li.active > a {
+    color: var(--sigemoy-primary);
+    background-color: rgba(26, 115, 232, 0.06);
+}
+
+/* Mobile Menu Toggle */
+.sigemoy-mobile-toggle {
+    display: none;
+    background: none;
+    border: 2px solid var(--sigemoy-border);
+    border-radius: var(--sigemoy-radius-sm);
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--sigemoy-text);
+    transition: var(--sigemoy-transition);
+}
+
+.sigemoy-mobile-toggle:hover {
+    border-color: var(--sigemoy-primary);
+    color: var(--sigemoy-primary);
+}
+
+/* ----------------------------------------------------------------------------
+   Doctor Cards
+   ---------------------------------------------------------------------------- */
+.team-area {
+    padding: 80px 0;
+    background-color: var(--sigemoy-bg-section);
+}
+
+.sigemoy-doctor-card {
+    background: var(--sigemoy-white);
+    border-radius: var(--sigemoy-radius);
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: var(--sigemoy-shadow);
+    transition: var(--sigemoy-transition);
+    height: 100%;
+    border: 1px solid var(--sigemoy-border);
+}
+
+.sigemoy-doctor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sigemoy-shadow-hover);
+}
+
+.sigemoy-doctor-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sigemoy-primary), var(--sigemoy-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.sigemoy-doctor-avatar span {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sigemoy-white);
+    font-family: 'Exo', sans-serif;
+}
+
+.sigemoy-doctor-info {
+    padding-top: 5px;
+}
+
+.sigemoy-doctor-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--sigemoy-text);
+    margin-bottom: 5px;
+    font-family: 'Exo', sans-serif;
+}
+
+.sigemoy-doctor-nip {
+    font-size: 0.8rem;
+    color: var(--sigemoy-text-muted);
+    margin-bottom: 8px;
+}
+
+.sigemoy-doctor-role {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--sigemoy-primary);
+    background: rgba(26, 115, 232, 0.08);
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ----------------------------------------------------------------------------
+   Edukasi Cards
+   ---------------------------------------------------------------------------- */
+.blog-area.blog-default-area {
+    padding: 80px 0;
+}
+
+.sigemoy-edu-card {
+    background: var(--sigemoy-white);
+    border-radius: var(--sigemoy-radius);
+    overflow: hidden;
+    box-shadow: var(--sigemoy-shadow);
+    transition: var(--sigemoy-transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--sigemoy-border);
+}
+
+.sigemoy-edu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sigemoy-shadow-hover);
+}
+
+.sigemoy-edu-media {
+    position: relative;
+    width: 100%;
+    padding-top: 60%;
+    overflow: hidden;
+    background: var(--sigemoy-bg-light);
+}
+
+.sigemoy-edu-media img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.sigemoy-edu-card:hover .sigemoy-edu-media img {
+    transform: scale(1.05);
+}
+
+.sigemoy-edu-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+.sigemoy-edu-placeholder i {
+    font-size: 3rem;
+    color: var(--sigemoy-primary);
+    opacity: 0.5;
+}
+
+.sigemoy-edu-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--sigemoy-transition);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sigemoy-edu-play i {
+    color: var(--sigemoy-primary);
+    font-size: 1.2rem;
+    margin-left: 3px;
+}
+
+.sigemoy-edu-card:hover .sigemoy-edu-play {
+    background: var(--sigemoy-primary);
+}
+
+.sigemoy-edu-card:hover .sigemoy-edu-play i {
+    color: var(--sigemoy-white);
+}
+
+.sigemoy-edu-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(26, 115, 232, 0.9);
+    color: var(--sigemoy-white);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+}
+
+.sigemoy-edu-content {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sigemoy-edu-date {
+    font-size: 0.8rem;
+    color: var(--sigemoy-text-muted);
+    margin-bottom: 10px;
+}
+
+.sigemoy-edu-date i {
+    margin-right: 5px;
+}
+
+.sigemoy-edu-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    font-family: 'Exo', sans-serif;
+}
+
+.sigemoy-edu-title a {
+    color: var(--sigemoy-text);
+    text-decoration: none;
+    transition: var(--sigemoy-transition);
+}
+
+.sigemoy-edu-title a:hover {
+    color: var(--sigemoy-primary);
+}
+
+.sigemoy-edu-desc {
+    font-size: 0.88rem;
+    color: var(--sigemoy-text-light);
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.sigemoy-edu-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--sigemoy-primary);
+    text-decoration: none;
+    transition: var(--sigemoy-transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.sigemoy-edu-link:hover {
+    color: var(--sigemoy-primary-dark);
+    gap: 10px;
+}
+
+/* ----------------------------------------------------------------------------
+   TOGA Cards
+   ---------------------------------------------------------------------------- */
+.toga-area {
+    padding: 80px 0;
+    background-color: var(--sigemoy-bg-section);
+}
+
+.sigemoy-toga-card {
+    background: var(--sigemoy-white);
+    border-radius: var(--sigemoy-radius);
+    overflow: hidden;
+    box-shadow: var(--sigemoy-shadow);
+    transition: var(--sigemoy-transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--sigemoy-border);
+}
+
+.sigemoy-toga-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sigemoy-shadow-hover);
+}
+
+.sigemoy-toga-img {
+    width: 100%;
+    padding-top: 65%;
+    position: relative;
+    overflow: hidden;
+    background: var(--sigemoy-bg-light);
+}
+
+.sigemoy-toga-img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.sigemoy-toga-card:hover .sigemoy-toga-img img {
+    transform: scale(1.05);
+}
+
+.sigemoy-toga-content {
+    padding: 20px;
+    flex: 1;
+}
+
+.sigemoy-toga-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--sigemoy-text);
+    margin-bottom: 10px;
+    font-family: 'Exo', sans-serif;
+}
+
+.sigemoy-toga-desc {
+    font-size: 0.88rem;
+    color: var(--sigemoy-text-light);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* ----------------------------------------------------------------------------
+   Empty State
+   ---------------------------------------------------------------------------- */
+.sigemoy-empty-state {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.sigemoy-empty-icon {
+    font-size: 3rem;
+    color: var(--sigemoy-text-muted);
+    opacity: 0.4;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.sigemoy-empty-state p {
+    font-size: 0.95rem;
+    color: var(--sigemoy-text-muted);
+    margin-bottom: 0;
+}
+
+/* ----------------------------------------------------------------------------
+   Footer
+   ---------------------------------------------------------------------------- */
+.footer-area {
+    background: #1a2332;
+    color: #c4cdd5;
+}
+
+.footer-main {
+    padding: 60px 0 40px;
+}
+
+.footer-widget {
+    margin-bottom: 20px;
+}
+
+.footer-widget-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--sigemoy-white);
+    margin-bottom: 20px;
+    font-family: 'Exo', sans-serif;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.footer-widget-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 35px;
+    height: 2px;
+    background: var(--sigemoy-primary);
+}
+
+.footer-widget-content p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #a0aab4;
+}
+
+.footer-widget-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-widget-nav li {
+    margin-bottom: 10px;
+}
+
+.footer-widget-nav li a {
+    color: #a0aab4;
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: var(--sigemoy-transition);
+    display: inline-flex;
+    align-items: center;
+}
+
+.footer-widget-nav li a::before {
+    content: '\f105';
+    font-family: FontAwesome;
+    margin-right: 8px;
+    font-size: 0.75rem;
+    transition: var(--sigemoy-transition);
+}
+
+.footer-widget-nav li a:hover {
+    color: var(--sigemoy-white);
+    padding-left: 5px;
+}
+
+.sigemoy-footer-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 0.88rem;
+}
+
+.sigemoy-footer-contact-item i {
+    color: var(--sigemoy-primary);
+    font-size: 1rem;
+    margin-top: 3px;
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sigemoy-footer-contact-item a {
+    color: #a0aab4;
+    text-decoration: none;
+    transition: var(--sigemoy-transition);
+}
+
+.sigemoy-footer-contact-item a:hover {
+    color: var(--sigemoy-white);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 0;
+}
+
+.footer-bottom .copyright {
+    font-size: 0.82rem;
+    color: #7a8a96;
+    margin: 0;
+}
+
+/* ----------------------------------------------------------------------------
+   Edukasi Public Pages
+   ---------------------------------------------------------------------------- */
+.sigemoy-page-header {
+    background: linear-gradient(135deg, #1a73e8, #00bcd4);
+    padding: 60px 0 40px;
+    text-align: center;
+    color: var(--sigemoy-white);
+}
+
+.sigemoy-page-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-family: 'Exo', sans-serif;
+}
+
+.sigemoy-page-header p {
+    font-size: 1rem;
+    opacity: 0.85;
+    margin-bottom: 0;
+}
+
+.sigemoy-breadcrumb {
+    padding: 15px 0;
+    background: var(--sigemoy-bg-light);
+    border-bottom: 1px solid var(--sigemoy-border);
+}
+
+.sigemoy-breadcrumb-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.sigemoy-breadcrumb-list li a {
+    color: var(--sigemoy-primary);
+    text-decoration: none;
+}
+
+.sigemoy-breadcrumb-list li a:hover {
+    text-decoration: underline;
+}
+
+.sigemoy-breadcrumb-list li.active {
+    color: var(--sigemoy-text-muted);
+}
+
+.sigemoy-breadcrumb-list li + li::before {
+    content: '/';
+    margin-right: 8px;
+    color: var(--sigemoy-text-muted);
+}
+
+/* Search Form */
+.sigemoy-search-form {
+    max-width: 500px;
+    margin: 0 auto 40px;
+}
+
+.sigemoy-search-form .input-group {
+    border-radius: var(--sigemoy-radius);
+    overflow: hidden;
+    box-shadow: var(--sigemoy-shadow);
+}
+
+.sigemoy-search-form .form-control {
+    border: 1px solid var(--sigemoy-border);
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    border-right: none;
+}
+
+.sigemoy-search-form .form-control:focus {
+    box-shadow: none;
+    border-color: var(--sigemoy-primary);
+}
+
+.sigemoy-search-form .btn {
+    background: var(--sigemoy-primary);
+    color: var(--sigemoy-white);
+    border: 1px solid var(--sigemoy-primary);
+    padding: 12px 20px;
+}
+
+.sigemoy-search-form .btn:hover {
+    background: var(--sigemoy-primary-dark);
+}
+
+/* Edukasi Detail */
+.sigemoy-edu-detail {
+    padding: 50px 0 80px;
+}
+
+.sigemoy-edu-detail-media {
+    border-radius: var(--sigemoy-radius);
+    overflow: hidden;
+    margin-bottom: 30px;
+    background: var(--sigemoy-bg-light);
+}
+
+.sigemoy-edu-detail-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.sigemoy-edu-detail-media .sigemoy-video-wrapper {
+    position: relative;
+    padding-top: 56.25%;
+}
+
+.sigemoy-edu-detail-media .sigemoy-video-wrapper iframe,
+.sigemoy-edu-detail-media .sigemoy-video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.sigemoy-edu-detail-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--sigemoy-text);
+    margin-bottom: 15px;
+    line-height: 1.3;
+    font-family: 'Exo', sans-serif;
+}
+
+.sigemoy-edu-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--sigemoy-border);
+    flex-wrap: wrap;
+}
+
+.sigemoy-edu-detail-meta span {
+    font-size: 0.85rem;
+    color: var(--sigemoy-text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sigemoy-edu-detail-body {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--sigemoy-text);
+}
+
+.sigemoy-edu-detail-body p {
+    margin-bottom: 16px;
+}
+
+.sigemoy-edu-related {
+    padding: 60px 0;
+    background: var(--sigemoy-bg-section);
+}
+
+.sigemoy-edu-related .section-title {
+    margin-bottom: 30px;
+}
+
+/* Pagination */
+.sigemoy-pagination {
+    margin-top: 40px;
+}
+
+.sigemoy-pagination .pagination {
+    justify-content: center;
+}
+
+.sigemoy-pagination .page-link {
+    color: var(--sigemoy-primary);
+    border-color: var(--sigemoy-border);
+    padding: 8px 15px;
+    font-size: 0.88rem;
+    border-radius: var(--sigemoy-radius-sm);
+    margin: 0 3px;
+    transition: var(--sigemoy-transition);
+}
+
+.sigemoy-pagination .page-link:hover {
+    background: var(--sigemoy-primary);
+    border-color: var(--sigemoy-primary);
+    color: var(--sigemoy-white);
+}
+
+.sigemoy-pagination .page-item.active .page-link {
+    background: var(--sigemoy-primary);
+    border-color: var(--sigemoy-primary);
+}
+
+/* ----------------------------------------------------------------------------
+   Responsive Enhancements
+   ---------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+    .sigemoy-mobile-toggle {
+        display: inline-block;
+    }
+
+    .header-navigation-area {
+        display: none;
+    }
+
+    .team-area,
+    .blog-area.blog-default-area,
+    .toga-area {
+        padding: 50px 0;
+    }
+
+    .sigemoy-doctor-card {
+        padding: 25px 15px;
+    }
+
+    .sigemoy-edu-detail-title {
+        font-size: 1.5rem;
+    }
+
+    .footer-main {
+        padding: 40px 0 20px;
+    }
+
+    .sigemoy-page-header {
+        padding: 40px 0 30px;
+    }
+
+    .sigemoy-page-header h1 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .header-top-align {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .team-area,
+    .blog-area.blog-default-area,
+    .toga-area {
+        padding: 40px 0;
+    }
+
+    .sigemoy-doctor-avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    .sigemoy-doctor-avatar span {
+        font-size: 1.5rem;
+    }
+
+    .section-title .title {
+        font-size: 1.5rem;
+    }
+
+    .sigemoy-edu-detail-title {
+        font-size: 1.3rem;
+    }
+
+    .sigemoy-edu-detail-meta {
+        gap: 12px;
+    }
+
+    .footer-widget-title::after {
+        width: 25px;
+    }
+
+    .sigemoy-page-header h1 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .sigemoy-brand-text {
+        font-size: 1.2rem;
+    }
+
+    .sigemoy-edu-content {
+        padding: 15px;
+    }
+
+    .sigemoy-toga-content {
+        padding: 15px;
+    }
+
+    .sigemoy-edu-detail {
+        padding: 30px 0 50px;
+    }
+
+    .sigemoy-search-form {
+        margin-bottom: 30px;
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   Smooth Scroll Behavior
+   ---------------------------------------------------------------------------- */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Section spacing for anchor link offset */
+section[id],
+.divider-area[id] {
+    scroll-margin-top: 80px;
+}
+
+/* ----------------------------------------------------------------------------
+   Accessibility Improvements
+   ---------------------------------------------------------------------------- */
+.sigemoy-edu-card:focus-within {
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.3);
+}
+
+.sigemoy-doctor-card:focus-within {
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.3);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--sigemoy-primary);
+    outline-offset: 2px;
+}
+
+/* Skip to content (accessibility) */
+.sigemoy-skip-link {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--sigemoy-primary);
+    color: var(--sigemoy-white);
+    padding: 10px 20px;
+    border-radius: 0 0 var(--sigemoy-radius-sm) var(--sigemoy-radius-sm);
+    z-index: 10000;
+    font-weight: 600;
+    text-decoration: none;
+    transition: top 0.2s;
+}
+
+.sigemoy-skip-link:focus {
+    top: 0;
+    color: var(--sigemoy-white);
+}

@@ -4,9 +4,21 @@
 
 # File log
 *.log
+/storage/logs/*
+!/storage/logs/.gitignore
 
 # File konfigurasi lingkungan
 #.env
+
+# Folder storage & cache
+/storage/debugbar/*
+!/storage/debugbar/.gitignore
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
 
 # Folder build output
 /public/storage/
@@ -18,5 +30,7 @@
 # Sistem operasi
 .DS_Store
 
-# File yang mungkin dibuat secara otomatis
+# File temporary / cache
 *.phpunit.result.cache
+*.zip
+test_render.php

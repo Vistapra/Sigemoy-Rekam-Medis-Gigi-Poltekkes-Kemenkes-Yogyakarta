@@ -190,7 +190,7 @@
 @endsection
 
 @section('style')
-    <link rel="stylesheet" href="{{ asset('edukasi/css/edukasiindex.css') }}">
+    <link rel="stylesheet" href="{{ asset('edukasi_assets/css/edukasiindex.css') }}">
 @endsection
 
 @section('script')
@@ -198,5 +198,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('vendor/metismenu/js/metisMenu.min.js') }}"></script>
-    <script src="{{ asset('edukasi/js/edukasiindex.js') }}"></script>
+    <script src="{{ asset('edukasi_assets/js/edukasiindex.js') }}"></script>
 @endsection

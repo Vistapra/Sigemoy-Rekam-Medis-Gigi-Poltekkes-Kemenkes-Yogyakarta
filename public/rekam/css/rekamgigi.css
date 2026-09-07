@@ -27,3 +27,113 @@ body .form-label {
 body #table-tindakan th {
     background-color: #f8f9fa;
 }
+
+/* Add this to your existing rekamgigi.css */
+
+/* Catatan Section Styling */
+.catatan-section {
+    background: #f8f9fa;
+    border-left: 4px solid #007bff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.catatan-section h6 {
+    color: #007bff;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.catatan-section .form-group {
+    margin-bottom: 15px;
+}
+
+.catatan-section textarea {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.catatan-section textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Table Catatan Display */
+.catatan-display {
+    max-width: 200px;
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+.catatan-display small {
+    display: block;
+    margin-bottom: 2px;
+    word-wrap: break-word;
+}
+
+.catatan-display strong {
+    color: #495057;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .catatan-section {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .catatan-display {
+        max-width: 150px;
+        font-size: 10px;
+    }
+}
+
+/* Tooltip for full catatan text */
+.catatan-tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.catatan-tooltip:hover::after {
+    content: attr(data-full-text);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: pre-wrap;
+    max-width: 300px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.catatan-tooltip:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+    z-index: 1000;
+}
+
+/* Form validation styling */
+.is-invalid {
+    border-color: #dc3545;
+}
+
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}

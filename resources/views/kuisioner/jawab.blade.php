@@ -24,16 +24,33 @@
                                     <div class="form-group" id="question_{{ $pertanyaan->id }}">
                                         <label class="font-weight-bold">{{ $loop->iteration }}.
                                             {{ $pertanyaan->teks_pertanyaan }}</label>
-                                        @foreach ($pertanyaan->opsiJawaban as $opsi)
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio"
-                                                    name="jawaban[{{ $pertanyaan->id }}][opsi_jawaban_id]"
-                                                    value="{{ $opsi->id }}" id="opsi_{{ $opsi->id }}">
-                                                <label class="form-check-label" for="opsi_{{ $opsi->id }}">
-                                                    {{ $opsi->teks_opsi }}
-                                                </label>
-                                            </div>
-                                        @endforeach
+                                        
+                                        @if($pertanyaan->jenis_jawaban == 'single_choice')
+                                            <!-- Single Choice (Radio Button) -->
+                                            @foreach ($pertanyaan->opsiJawaban as $opsi)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="jawaban[{{ $pertanyaan->id }}][opsi_jawaban_id]"
+                                                        value="{{ $opsi->id }}" id="opsi_{{ $opsi->id }}">
+                                                    <label class="form-check-label" for="opsi_{{ $opsi->id }}">
+                                                        {{ $opsi->teks_opsi }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <!-- Multiple Choice (Checkbox) -->
+                                            @foreach ($pertanyaan->opsiJawaban as $opsi)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="jawaban[{{ $pertanyaan->id }}][opsi_jawaban_id][]"
+                                                        value="{{ $opsi->id }}" id="opsi_{{ $opsi->id }}">
+                                                    <label class="form-check-label" for="opsi_{{ $opsi->id }}">
+                                                        {{ $opsi->teks_opsi }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                        
                                         <textarea class="form-control mt-2" name="jawaban[{{ $pertanyaan->id }}][keterangan]" rows="2"
                                             placeholder="Keterangan (opsional)"></textarea>
                                     </div>
@@ -61,6 +78,20 @@
         border-radius: 5px;
         background-color: #ffe6e6;
     }
+    
+    .question-type-badge {
+        display: inline-block;
+        font-size: 11px;
+        background-color: #007bff;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 10px;
+        margin-left: 10px;
+    }
+    
+    .question-type-badge.multiple {
+        background-color: #28a745;
+    }
 </style>
 @endsection
 
@@ -68,6 +99,19 @@
 <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
+        // Menambahkan badge untuk menunjukkan jenis pertanyaan
+        $('.form-group').each(function() {
+            const $radioInputs = $(this).find('input[type="radio"]');
+            const $checkboxInputs = $(this).find('input[type="checkbox"]');
+            const $label = $(this).find('label.font-weight-bold');
+            
+            if ($radioInputs.length > 0) {
+                $label.append('<span class="question-type-badge">Pilih Satu</span>');
+            } else if ($checkboxInputs.length > 0) {
+                $label.append('<span class="question-type-badge multiple">Bisa Pilih Lebih dari Satu</span>');
+            }
+        });
+
         $('#kuisionerForm').submit(function(e) {
             e.preventDefault();
 
@@ -78,8 +122,18 @@
 
             $('.form-group').each(function() {
                 const $radioInputs = $(this).find('input[type="radio"]');
-                if ($radioInputs.filter(':checked').length) {
-                    answeredQuestions++;
+                const $checkboxInputs = $(this).find('input[type="checkbox"]');
+                
+                if ($radioInputs.length > 0) {
+                    // Single choice question
+                    if ($radioInputs.filter(':checked').length) {
+                        answeredQuestions++;
+                    }
+                } else if ($checkboxInputs.length > 0) {
+                    // Multiple choice question
+                    if ($checkboxInputs.filter(':checked').length) {
+                        answeredQuestions++;
+                    }
                 }
             });
 
@@ -150,7 +204,8 @@
             });
         }
 
-        $('input[type="radio"]').change(function() {
+        // Event handler untuk radio button dan checkbox
+        $('input[type="radio"], input[type="checkbox"]').change(function() {
             $(this).closest('.form-group').removeClass('unanswered-question');
         });
     });

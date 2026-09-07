@@ -25,6 +25,8 @@ use App\Http\Controllers\RekamPemeriksaanController;
 
 
 route::get('/', [FrontendController::class, 'sigemoy'])->name('sigemoy');
+Route::get('/edukasi-publik', [FrontendController::class, 'edukasiIndex'])->name('edukasi.publik');
+Route::get('/edukasi-publik/{id}', [FrontendController::class, 'edukasiDetail'])->name('edukasi.publik.detail');
 
 Route::get('/multilogin', [AuthController::class, 'page_login'])->name('login');
 Route::get('/loginkader', [AuthController::class, 'kader_kesehatan'])->name('login_kader_kesehatan');
