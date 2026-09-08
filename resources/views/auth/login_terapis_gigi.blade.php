@@ -1,56 +1,68 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100">
-
+<html lang="id">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Si Gemoy | Login Terapis Gigi</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logo.png') }}">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Terapis Gigi | SI-GEMOY</title>
+    <link rel="shortcut icon" href="{{ asset('frontend/assets/img/favicon.ico') }}" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('frontend/assets/css/sigemoy-rebuild.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('mobile/loginterapis.css') }}">
+    <style>
+        .sg-toast {
+            font-family: var(--sg-font-sans);
+        }
+    </style>
 </head>
+<body class="sg-body sg-auth-page">
+    <main class="sg-auth-card">
+        <a href="{{ route('sigemoy') }}" class="sg-auth-logo" aria-label="Kembali ke Beranda">
+            <svg viewBox="0 0 40 40" width="40" height="40"><defs><linearGradient id="sgLogoAuth" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14C3C2"/><stop offset="100%" stop-color="#0B7A79"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="12" fill="url(#sgLogoAuth)"/><path d="M13 14c0-2.8 2.7-4.5 5.2-3.3.8.4 1.8.4 2.6 0C23.3 9.5 26 11.2 26 14c0 3.4-2.4 6-3.4 9.7-.5 1.9-2.7 1.9-3.2 0C18.4 20 16 17.4 16 14z" fill="#fff" opacity=".95"/><circle cx="20" cy="27.5" r="1.6" fill="#F59E0B"/></svg>
+        </a>
+        
+        <h1 class="sg-auth-title">Login Terapis Gigi</h1>
+        <p class="sg-auth-subtitle">Masukkan email dan kata sandi Anda untuk mengakses panel tenaga medis.</p>
 
-<body class="h-100">
-    <div class="wrapper">
-        <div class="logo">
-            <a href="/" class="logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Si Gemoy Logo">
-            </a>
-        </div>
-        <p class="text-center">TERAPIS GIGI</p>
-        <form action="{{ Route('login.auth') }}" method="POST">
+        <form action="{{ route('login.auth') }}" method="POST" class="sg-auth-form">
             {{ csrf_field() }}
-            <div class="form-field">
-                <input type="email" name="email" placeholder="email" required>
+            
+            <div class="sg-form-group">
+                <label for="email" class="sg-form-label">Email</label>
+                <input type="email" name="email" id="email" class="sg-form-control" placeholder="Masukkan email Anda" required autofocus>
             </div>
-            <div class="form-field">
-                <input type="password" name="password" placeholder="Password" required>
+            
+            <div class="sg-form-group">
+                <label for="password" class="sg-form-label">Kata Sandi</label>
+                <input type="password" name="password" id="password" class="sg-form-control" placeholder="Masukkan kata sandi Anda" required>
             </div>
-            <button class="btn" type="submit">LOGIN</button>
-            <div class="text-center">
-                <a href="{{ Route('login_kader_kesehatan') }}">Login Sebagai Kader Kesehatan</a>
-            </div>
+            
+            <button type="submit" class="sg-btn sg-btn--primary sg-auth-btn">Masuk</button>
         </form>
-    </div>
 
-    <script src="{{ asset('vendor/global/global.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('js/custom.min.js') }}"></script>
-    <script src="{{ asset('js/deznav-init.js') }}"></script>
+        <div class="sg-auth-links">
+            <a href="{{ route('login_kader_kesehatan') }}">Atau masuk sebagai Kader Kesehatan &rarr;</a>
+            <a href="{{ route('login') }}" style="color: var(--sg-gray); font-weight: normal; margin-top: 16px;">Kembali ke Pilihan Akses</a>
+        </div>
+    </main>
+
+    <script src="{{ asset('frontend/assets/js/jquery-3.6.0-main.js') }}"></script>
     <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "toastClass": "sg-toast"
+        };
         @if (Session::has('sukses'))
-            toastr.success("{{ Session::get('sukses') }}", "Sukses", { timeOut: 5000 });
+            toastr.success("{{ Session::get('sukses') }}", "Sukses");
         @endif
         @if (Session::has('gagal'))
-            toastr.error("{{ Session::get('gagal') }}", "Gagal", { timeOut: 5000 });
+            toastr.error("{{ Session::get('gagal') }}", "Gagal");
         @endif
     </script>
 </body>
-
 </html>
