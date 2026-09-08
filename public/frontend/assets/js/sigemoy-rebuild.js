@@ -164,6 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const suffix = el.getAttribute('data-sg-suffix') || '';
             const obj = { val: 0 };
             
+            // Set initial state to 0 if JS runs, else it stays at the final value in HTML
+            el.innerText = '0' + suffix;
+            
             ScrollTrigger.create({
                 trigger: el,
                 start: "top 90%",

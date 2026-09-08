@@ -551,11 +551,15 @@ h1, h2, h3, h4, h5, h6, .sg-title {
 
 .sg-hero__visual {
   position: relative;
-  height: 500px;
-  display: none;
+  height: 300px;
+  display: block;
+  margin-top: 40px;
+}
+@media (min-width: 768px) {
+  .sg-hero__visual { height: 400px; }
 }
 @media (min-width: 1024px) {
-  .sg-hero__visual { display: block; }
+  .sg-hero__visual { height: 500px; margin-top: 0; }
 }
 
 .sg-hero__card {
@@ -568,14 +572,15 @@ h1, h2, h3, h4, h5, h6, .sg-title {
   align-items: center;
   gap: 16px;
   border: 1px solid var(--sg-glass-border);
+  --sg-scale: 1;
 }
 
 .sg-hero__card--main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 320px;
-  height: 320px;
+  width: 240px;
+  height: 240px;
   padding: 0;
   display: flex;
   justify-content: center;
@@ -583,6 +588,9 @@ h1, h2, h3, h4, h5, h6, .sg-title {
   background: transparent;
   box-shadow: none;
   border: none;
+}
+@media (min-width: 768px) {
+  .sg-hero__card--main { width: 320px; height: 320px; }
 }
 .sg-hero__card--main img {
   width: 100%;
@@ -592,14 +600,20 @@ h1, h2, h3, h4, h5, h6, .sg-title {
 }
 
 .sg-hero__card--stat {
-  top: 10%;
-  right: 0;
+  top: 0;
+  right: -10px;
+  --sg-scale: 0.8;
   animation: float 7s ease-in-out infinite reverse;
 }
 .sg-hero__card--pulse {
-  bottom: 20%;
-  left: 0;
+  bottom: 0;
+  left: -10px;
+  --sg-scale: 0.8;
   animation: float 5s ease-in-out infinite 1s;
+}
+@media (min-width: 768px) {
+  .sg-hero__card--stat { top: 10%; right: 0; --sg-scale: 1; }
+  .sg-hero__card--pulse { bottom: 20%; left: 0; --sg-scale: 1; }
 }
 
 .sg-hero__stat-ico {
@@ -630,8 +644,8 @@ h1, h2, h3, h4, h5, h6, .sg-title {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%, 100% { transform: scale(var(--sg-scale)) translateY(0); }
+  50% { transform: scale(var(--sg-scale)) translateY(-20px); }
 }
 
 @keyframes pulse {

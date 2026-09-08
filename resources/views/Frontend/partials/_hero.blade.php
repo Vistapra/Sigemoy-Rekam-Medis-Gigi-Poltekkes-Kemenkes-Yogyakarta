@@ -34,11 +34,11 @@
                     <dd>Beroperasi sejak</dd>
                 </div>
                 <div>
-                    <dt data-sg-count="100" data-sg-suffix="%">0%</dt>
+                    <dt data-sg-count="100" data-sg-suffix="%">100%</dt>
                     <dd>Digital &amp; paperless</dd>
                 </div>
                 <div>
-                    <dt data-sg-count="24" data-sg-suffix="/7">0/7</dt>
+                    <dt data-sg-count="24" data-sg-suffix="/7">24/7</dt>
                     <dd>Akses rekam medis</dd>
                 </div>
             </dl>
