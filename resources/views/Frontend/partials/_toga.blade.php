@@ -1,37 +1,43 @@
-<section class="toga-area" id="toga">
-    <div class="container" data-aos="fade-up">
-        <div class="section-title text-center">
-            <h5 class="sub-title">TOGA</h5>
-            <h2 class="title">Tanaman <span>Obat</span> Keluarga</h2>
-            <div class="desc"><p>Kenali tanaman obat keluarga yang bermanfaat untuk kesehatan</p></div>
+<section class="sg-section sg-toga" id="toga">
+    <div class="sg-toga__bg" aria-hidden="true"></div>
+    <div class="sg-container">
+        <div class="sg-section-head">
+            <div>
+                <span class="sg-eyebrow" data-sg-reveal><span class="sg-eyebrow__dot"></span>TOGA</span>
+                <h2 class="sg-title" data-sg-reveal>
+                    Tanaman <em>Obat Keluarga</em>.
+                </h2>
+            </div>
+            <p class="sg-section-head__note" data-sg-reveal>
+                Kenali tanaman obat keluarga yang bermanfaat untuk kesehatan — dokumentasi resmi SI-GEMOY.
+            </p>
         </div>
+
         @if(isset($toga) && $toga->count() > 0)
-        <div class="row">
-            @foreach($toga as $item)
-            <div class="col-sm-6 col-lg-4 mb-4">
-                <div class="sigemoy-toga-card">
-                    @if($item->foto)
-                    <div class="sigemoy-toga-img">
-                        <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->judul }}" loading="lazy">
-                    </div>
-                    @endif
-                    <div class="sigemoy-toga-content">
-                        <h4 class="sigemoy-toga-title">{{ $item->judul }}</h4>
-                        <p class="sigemoy-toga-desc">{{ Str::limit(strip_tags($item->deskripsi), 120) }}</p>
-                    </div>
-                </div>
+            <div class="sg-card-grid sg-card-grid--3" data-sg-stagger>
+                @foreach($toga as $item)
+                    <article class="sg-toga-card">
+                        <div class="sg-toga-card__media">
+                            @if($item->foto)
+                                <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->judul }}" loading="lazy">
+                            @else
+                                <div class="sg-toga-card__placeholder" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="34" height="34"><path fill="currentColor" d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8"/></svg>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="sg-toga-card__body">
+                            <h3 class="sg-toga-card__title">{{ $item->judul }}</h3>
+                            <p class="sg-toga-card__desc">{{ Str::limit(strip_tags($item->deskripsi), 120) }}</p>
+                        </div>
+                    </article>
+                @endforeach
             </div>
-            @endforeach
-        </div>
         @else
-        <div class="row">
-            <div class="col-12 text-center">
-                <div class="sigemoy-empty-state">
-                    <i class="fa fa-leaf sigemoy-empty-icon"></i>
-                    <p>Informasi TOGA akan segera tersedia.</p>
-                </div>
+            <div class="sg-empty" data-sg-reveal>
+                <svg viewBox="0 0 24 24" width="42" height="42" aria-hidden="true"><path fill="currentColor" d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8"/></svg>
+                <p>Informasi TOGA akan segera tersedia.</p>
             </div>
-        </div>
         @endif
     </div>
 </section>

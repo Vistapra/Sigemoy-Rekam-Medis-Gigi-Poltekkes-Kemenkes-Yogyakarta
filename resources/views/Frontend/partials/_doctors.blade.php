@@ -1,42 +1,35 @@
-<section class="team-area team-default-area" id="tim-dokter">
-    <div class="container" data-aos="fade-up">
-        <div class="row">
-            <div class="col-12">
-                <div class="section-title text-center">
-                    <h5 class="sub-title">TIM KAMI</h5>
-                    <h2 class="title">Dokter <span>Gigi</span> Profesional</h2>
-                    <div class="desc"><p>Tim dokter gigi berpengalaman dan bersertifikasi yang siap membantu Anda</p></div>
-                </div>
-            </div>
+<section class="sg-section sg-doctors" id="tim-dokter">
+    <div class="sg-container">
+        <div class="sg-section-head sg-section-head--center">
+            <span class="sg-eyebrow" data-sg-reveal><span class="sg-eyebrow__dot"></span>Tim Kami</span>
+            <h2 class="sg-title" data-sg-reveal>
+                Dokter gigi <em>profesional</em> &amp; tersertifikasi.
+            </h2>
+            <p class="sg-lead sg-center-block" data-sg-reveal>
+                Tim dokter gigi berpengalaman yang mendukung layanan dan pembelajaran di Poltekkes Kemenkes Yogyakarta.
+            </p>
         </div>
+
         @if(isset($dokter) && $dokter->count() > 0)
-        <div class="row justify-content-center">
-            @foreach($dokter as $dr)
-            <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
-                <div class="sigemoy-doctor-card">
-                    <div class="sigemoy-doctor-avatar">
-                        <span>{{ strtoupper(substr($dr->nama, 0, 1)) }}</span>
-                    </div>
-                    <div class="sigemoy-doctor-info">
-                        <h5 class="sigemoy-doctor-name">{{ $dr->nama }}</h5>
+            <div class="sg-card-grid sg-card-grid--4" data-sg-stagger>
+                @foreach($dokter as $dr)
+                    <article class="sg-doc-card">
+                        <div class="sg-doc-card__avatar" aria-hidden="true">
+                            <span>{{ strtoupper(substr($dr->nama, 0, 1)) }}</span>
+                        </div>
+                        <h3 class="sg-doc-card__name">{{ $dr->nama }}</h3>
                         @if($dr->nip)
-                        <p class="sigemoy-doctor-nip">NIP: {{ $dr->nip }}</p>
+                            <p class="sg-doc-card__nip">NIP: {{ $dr->nip }}</p>
                         @endif
-                        <span class="sigemoy-doctor-role">Dokter Gigi</span>
-                    </div>
-                </div>
+                        <span class="sg-doc-card__role">Dokter Gigi</span>
+                    </article>
+                @endforeach
             </div>
-            @endforeach
-        </div>
         @else
-        <div class="row">
-            <div class="col-12 text-center">
-                <div class="sigemoy-empty-state">
-                    <i class="fa fa-user-md sigemoy-empty-icon"></i>
-                    <p>Informasi tim dokter akan segera tersedia.</p>
-                </div>
+            <div class="sg-empty" data-sg-reveal>
+                <svg viewBox="0 0 24 24" width="42" height="42" aria-hidden="true"><path fill="currentColor" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5m0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5"/></svg>
+                <p>Informasi tim dokter akan segera tersedia.</p>
             </div>
-        </div>
         @endif
     </div>
 </section>
