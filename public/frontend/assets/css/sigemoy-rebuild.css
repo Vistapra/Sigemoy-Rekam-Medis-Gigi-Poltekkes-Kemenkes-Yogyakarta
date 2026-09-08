@@ -1253,3 +1253,211 @@ h1, h2, h3, h4, h5, h6, .sg-title {
   background: var(--sg-primary-dark);
   transform: translateY(-5px);
 }
+
+/* Subpages (Edukasi, TOGA, etc) */
+.sg-page-hero {
+  padding-top: 140px;
+  padding-bottom: 60px;
+  background: linear-gradient(to bottom, #f8fafc 0%, #ffffff 100%);
+  border-bottom: 1px solid var(--sg-gray-light);
+}
+.sg-page-hero--sm {
+  padding-top: 120px;
+  padding-bottom: 40px;
+}
+.sg-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--sg-gray);
+  margin-bottom: 24px;
+}
+.sg-breadcrumb a {
+  color: var(--sg-primary);
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sg-breadcrumb a:hover {
+  text-decoration: underline;
+}
+.sg-article {
+  padding: 60px 0;
+}
+.sg-article__head {
+  margin-bottom: 40px;
+  text-align: center;
+}
+.sg-article__meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.875rem;
+  color: var(--sg-gray);
+  margin-bottom: 16px;
+}
+.sg-article__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sg-article__type {
+  color: var(--sg-primary);
+  font-weight: 600;
+  background: rgba(11, 122, 121, 0.1);
+  padding: 4px 12px;
+  border-radius: var(--sg-radius-pill);
+}
+.sg-article__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--sg-darker);
+  line-height: 1.2;
+}
+.sg-article__media {
+  margin-bottom: 40px;
+}
+.sg-article__media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--sg-radius-lg);
+  box-shadow: var(--sg-shadow-md);
+}
+.sg-article__body {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #334155;
+}
+.sg-article__body p {
+  margin-bottom: 24px;
+}
+.sg-container--narrow {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.sg-edu-card__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sg-light);
+  color: var(--sg-gray);
+  font-size: 3rem;
+}
+.sg-video-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  border-radius: var(--sg-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--sg-shadow-md);
+  margin-bottom: 32px;
+}
+.sg-video-wrap iframe,
+.sg-video-wrap video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.sg-search {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+  margin-top: 32px;
+}
+@media (min-width: 768px) {
+  .sg-search { flex-direction: row; }
+}
+.sg-search__field {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--sg-white);
+  border: 1px solid var(--sg-gray-light);
+  border-radius: var(--sg-radius-pill);
+  padding: 8px 24px;
+  transition: var(--sg-transition);
+}
+.sg-search__field:focus-within {
+  border-color: var(--sg-primary);
+  box-shadow: 0 0 0 3px rgba(11, 122, 121, 0.1);
+}
+.sg-search__field input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 8px 0;
+  outline: none;
+}
+.sg-search-info {
+  margin-top: 16px;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.sg-chip-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fee2e2;
+  color: #ef4444;
+  padding: 4px 12px;
+  border-radius: var(--sg-radius-pill);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--sg-transition);
+}
+.sg-chip-clear:hover {
+  background: #fecaca;
+  color: #b91c1c;
+}
+.sg-edu-listing {
+  padding-top: 60px;
+}
+.sg-pagination {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+.sg-pagination .pagination {
+  margin: 0;
+  gap: 8px;
+}
+.sg-pagination .page-link {
+  border: none;
+  color: var(--sg-gray);
+  border-radius: var(--sg-radius);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+.sg-pagination .page-item.active .page-link {
+  background: var(--sg-primary);
+  color: var(--sg-white);
+}
+.sg-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--sg-gray);
+  background: var(--sg-light);
+  border-radius: var(--sg-radius-lg);
+}
+.sg-empty svg {
+  color: var(--sg-gray-light);
+  margin-bottom: 16px;
+}
