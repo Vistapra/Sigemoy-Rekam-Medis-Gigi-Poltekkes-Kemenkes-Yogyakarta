@@ -15,8 +15,8 @@ class RekamMedisKaderController extends Controller
     {
         $query = RekamMedisKader::with(['pasien', 'namaKondisiGigi', 'user']);
 
-        if ($request->has('search')) {
-            $search = $request->search;
+        $search = $request->input('search', $request->input('keyword'));
+        if ($search !== null && $search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->whereHas('pasien', function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%");

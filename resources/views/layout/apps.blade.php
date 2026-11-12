@@ -151,6 +151,7 @@
         }
     </style>
     @yield('header')
+    @yield('style')
 </head>
 
 <body>
@@ -260,11 +261,11 @@
         }
 
         // Toastr notifications (modified to use the new showMessage function)
-        @if (Session::has('sukses'))
-            showMessage('success', 'Sukses', "{{ Session::get('sukses') }}");
+        @if (Session::has('sukses') || Session::has('success'))
+            showMessage('success', 'Sukses', @json(Session::get('sukses', Session::get('success'))));
         @endif
-        @if (Session::has('gagal'))
-            showMessage('error', 'Gagal', "{{ Session::get('gagal') }}");
+        @if (Session::has('gagal') || Session::has('error'))
+            showMessage('error', 'Gagal', @json(Session::get('gagal', Session::get('error'))));
         @endif
 
         // Pusher configuration
@@ -279,49 +280,39 @@
     </script>
     @yield('script')
 
-    
-   <script>
+    <script>
         (function() {
-           
             if (typeof console !== "undefined") {
                 console.log = console.warn = console.error = function() {};
             }
 
-           
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
             }, false);
 
-            Disable certain keyboard shortcuts
+            // Disable certain keyboard shortcuts
             document.addEventListener('keydown', function(e) {
-              
                 if (e.ctrlKey && (e.shiftKey && (e.keyCode === 73 || e.keyCode === 74) || e.keyCode === 85)) {
                     e.preventDefault();
                 }
-               
+
                 if (e.keyCode === 123) {
                     e.preventDefault();
                 }
-        });
+            });
 
-      
-        function disableDevTools() {
-            if (typeof window.__defineGetter__ === "function") {
-                window.__defineGetter__('console', function() {
-                    return {
-                        log: function() {},
-                        warn: function() {},
-                        error: function() {}
-                    };
-                });
+            function disableDevTools() {
+                if (typeof window.__defineGetter__ === "function") {
+                    window.__defineGetter__('console', function() {
+                        return {
+                            log: function() {},
+                            warn: function() {},
+                            error: function() {}
+                        };
+                    });
+                }
             }
-        }
-        disableDevTools();
-
-        document.documentElement.style.display = 'none';
-        document.addEventListener('DOMContentLoaded', function() {
-        document.documentElement.style.display = 'block';
-        });
+            disableDevTools();
         })();
     </script>
 </body>

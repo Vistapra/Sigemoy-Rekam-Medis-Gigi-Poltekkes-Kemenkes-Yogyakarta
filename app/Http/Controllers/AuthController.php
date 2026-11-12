@@ -12,6 +12,9 @@ class AuthController extends Controller
 {
     public function page_login()
     {
+        if (Auth::check()) {
+            return redirect('/dashboard');
+        }
         return view('auth.login');
     }
     public function kader_kesehatan()

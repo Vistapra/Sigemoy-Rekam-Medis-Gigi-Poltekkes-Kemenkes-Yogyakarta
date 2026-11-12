@@ -22,11 +22,17 @@
                                                 alt="{{ $edukasi->judul }}" class="img-fluid">
                                         </a>
                                     @elseif($edukasi->media_type === 'video_upload')
-                                        <video id="my-video" class="video-js vjs-big-play-centered" controls
-                                            preload="auto">
-                                            <source src="{{ asset('storage/' . $edukasi->media_path) }}" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
+                                        @if($edukasi->media_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($edukasi->media_path))
+                                            <video id="my-video" class="video-js vjs-big-play-centered" controls
+                                                preload="metadata">
+                                                <source src="{{ asset('storage/' . $edukasi->media_path) }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        @else
+                                            <div class="alert alert-warning mb-0">
+                                                <i class="fa fa-exclamation-triangle mr-2"></i>File video belum tersedia di penyimpanan server. Silakan klik tombol <strong>Edit</strong> untuk mengunggah ulang video.
+                                            </div>
+                                        @endif
                                     @elseif($edukasi->media_type === 'video_url')
                                         <div class="video-container">
                                             <iframe

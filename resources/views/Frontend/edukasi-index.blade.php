@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="sg-pagination">
-                        {{ $edukasi->appends(['search' => $search ?? ''])->links('pagination::bootstrap-5') }}
+                        {{ $edukasi->appends(['search' => $search ?? ''])->links('pagination::bootstrap-4') }}
                     </div>
                 @else
                     <div class="sg-empty">

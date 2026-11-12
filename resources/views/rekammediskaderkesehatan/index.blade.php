@@ -40,12 +40,12 @@
                                 @foreach ($rekamMedisKader as $key => $row)
                                     <tr>
                                         <td align="center">{{ $rekamMedisKader->firstItem() + $key }}</td>
-                                        <td>{{ $row->created_at->format('Y-m-d') }}</td>
+                                        <td>{{ optional($row->created_at)->format('Y-m-d') ?? '-' }}</td>
                                         <td><a
-                                                href="{{ route('rekammediskaderkesehatan.show', $row->id) }}">{{ $row->pasien->nama }}</a>
+                                                href="{{ route('rekammediskaderkesehatan.show', $row->id) }}">{{ optional($row->pasien)->nama ?? '-' }}</a>
                                         </td>
-                                        <td>{{ $row->user->name }}</td>
-                                        <td>{{ $row->namaKondisiGigi->nama_kondisi }}</td>
+                                        <td>{{ optional($row->user)->name ?? '-' }}</td>
+                                        <td>{{ optional($row->namaKondisiGigi)->nama_kondisi ?? '-' }}</td>
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('rekammediskaderkesehatan.show', $row->id) }}"
@@ -56,7 +56,7 @@
                                                         class="fa fa-pencil"></i></a>
                                                 <a href="javascript:void(0);"
                                                     class="btn btn-danger shadow btn-xs sharp delete"
-                                                    data-id="{{ $row->id }}" data-name="{{ $row->pasien->nama }}">
+                                                    data-id="{{ $row->id }}" data-name="{{ optional($row->pasien)->nama ?? 'Pasien' }}">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                                 <form id="delete-form-{{ $row->id }}"

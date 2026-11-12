@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Rekam;
 use App\Observers\ItemObserver;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 
@@ -26,7 +27,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Paginator::useBootstrapThree();
+        Paginator::useBootstrap();
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
         date_default_timezone_set('Asia/Singapore');
 
     }

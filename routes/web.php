@@ -36,9 +36,8 @@ Route::get('/loginterapis', [AuthController::class, 'terapis_gigi'])->name('logi
 Route::post('/login', [AuthController::class, 'auth'])->name('login.auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/loaddata', [RekamPemeriksaanController::class, 'insertToTableNew'])->name('loaddata');
-
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/loaddata', [RekamPemeriksaanController::class, 'insertToTableNew'])->name('loaddata');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/getDokter', [DokterController::class, 'getDokter'])->name('getDokter');
@@ -55,8 +54,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/petugas/{id}/update', [PetugasController::class, 'update'])->name('petugas.update');
     Route::delete('/petugas/{id}/delete', [PetugasController::class, 'delete'])->name('petugas.delete');
 
-    Route::get('/getNoRM', [PasienController::class, 'getLastRM'])->name('getNoRM');
-
     Route::get('/pasien', [PasienController::class, 'index'])->name('pasien');
     Route::get('/pasien/add', [PasienController::class, 'add'])->name('pasien.add');
     Route::get('/pasien/{id}/edit', [PasienController::class, 'edit'])->name('pasien.edit');
@@ -66,8 +63,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/pasien/store', [PasienController::class, 'store'])->name('pasien.store');
     Route::post('/pasien/{id}/update', [PasienController::class, 'update'])->name('pasien.update');
-
-    Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran');
 
     Route::get('/obat/json', [ObatController::class, 'data'])->name('obat.data');
     Route::get('/obat', [ObatController::class, 'index'])->name('obat');
@@ -102,7 +97,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('rekam/gigi')->name('rekam.gigi.')->group(function () {
         Route::get('/{pasienId}', [RekamGigiController::class, 'index'])->name('add');
         Route::post('/{pasienId}/store', [RekamGigiController::class, 'store'])->name('store');
-        Route::get('/{pasienId}/odontogram', [RekamGigiController::class, 'odontogram'])->name('odontogram');
         Route::get('/{pasienid}/edit', [RekamGigiController::class, 'edit'])->name('edit'); // Ubah ini
         Route::put('/{pasienid}', [RekamGigiController::class, 'update'])->name('update'); // Ubah ini
         Route::delete('/{id}', [RekamGigiController::class, 'delete'])->name('delete');
@@ -130,10 +124,8 @@ Route::group(['middleware' => 'auth'], function () {
     //toga
     Route::prefix('toga')->name('toga.')->group(function () {
         Route::get('/', [TogaController::class, 'index'])->name('index');
-        Route::get('/create', [TogaController::class, 'create'])->name('create');
         Route::post('/', [TogaController::class, 'store'])->name('store');
         Route::get('/{toga}', [TogaController::class, 'show'])->name('show');
-        Route::get('/{toga}/edit', [TogaController::class, 'edit'])->name('edit');
         Route::put('/{toga}', [TogaController::class, 'update'])->name('update');
         Route::delete('/{toga}', [TogaController::class, 'destroy'])->name('destroy');
     });
@@ -162,23 +154,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [KuisionerController::class, 'index'])->name('index');
 
         // Kategori
-        Route::get('/create', [KuisionerController::class, 'create'])->name('create');
         Route::post('/store', [KuisionerController::class, 'store'])->name('store');
-        Route::get('/kategori/edit/{id}', [KuisionerController::class, 'editKategori'])->name('editKategori');
         Route::put('/kategori/update/{id}', [KuisionerController::class, 'updateKategori'])->name('updateKategori');
         Route::delete('/kategori/delete/{id}', [KuisionerController::class, 'deleteKategori'])->name('deleteKategori');
 
         // Pertanyaan
-        Route::get('/{kategori_id}/create-pertanyaan', [KuisionerController::class, 'createPertanyaan'])->name('createPertanyaan');
         Route::post('/{kategori_id}/store-pertanyaan', [KuisionerController::class, 'storePertanyaan'])->name('storePertanyaan');
-        Route::get('/pertanyaan/edit/{id}', [KuisionerController::class, 'editPertanyaan'])->name('editPertanyaan');
         Route::put('/pertanyaan/update/{id}', [KuisionerController::class, 'updatePertanyaan'])->name('updatePertanyaan');
         Route::delete('/pertanyaan/delete/{id}', [KuisionerController::class, 'deletePertanyaan'])->name('deletePertanyaan');
 
         // Opsi Jawaban
-        Route::get('/{pertanyaan_id}/create-opsi-jawaban', [KuisionerController::class, 'createOpsiJawaban'])->name('createOpsiJawaban');
         Route::post('/{pertanyaan_id}/store-opsi-jawaban', [KuisionerController::class, 'storeOpsiJawaban'])->name('storeOpsiJawaban');
-        Route::get('/opsi-jawaban/edit/{id}', [KuisionerController::class, 'editOpsiJawaban'])->name('editOpsiJawaban');
         Route::put('/opsi-jawaban/update/{id}', [KuisionerController::class, 'updateOpsiJawaban'])->name('updateOpsiJawaban');
         Route::delete('/opsi-jawaban/delete/{id}', [KuisionerController::class, 'deleteOpsiJawaban'])->name('deleteOpsiJawaban');
 
@@ -190,7 +176,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::prefix('rekammediskaderkesehatan')->name('rekammediskaderkesehatan.')->group(function () {
         Route::get('/', [RekamMedisKaderController::class, 'index'])->name('index');
-        Route::get('/export', [RekamMedisKaderController::class, 'export'])->name('export');
         Route::get('/create/{pasien_id}', [RekamMedisKaderController::class, 'create'])->name('create');
         Route::post('/', [RekamMedisKaderController::class, 'store'])->name('store');
         Route::get('/{rekamMedisKader}', [RekamMedisKaderController::class, 'show'])->name('show');

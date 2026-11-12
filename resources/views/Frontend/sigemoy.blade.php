@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0B7A79">
     <meta name="description" content="SI-GEMOY (Sistem Informasi Gigi E-Monitoring Yogyakarta) — platform digital rekam medis gigi oleh Poltekkes Kemenkes Yogyakarta.">
+    <meta name="google-site-verification" content="-2im2dXntfsyfd98vek3aJy6XYFHJWpLMO1JQ9a4ZyU" />
+    <link rel="canonical" href="https://sigemoypolkesyo.com/" />
 
     <title>SI-GEMOY | Sistem Informasi Rekam Medis Gigi — Poltekkes Kemenkes Yogyakarta</title>
 

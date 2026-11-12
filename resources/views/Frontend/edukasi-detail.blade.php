@@ -63,12 +63,16 @@
                             <div class="sg-note sg-note--warn">URL video tidak valid.</div>
                         @endif
                     @elseif($edukasi->media_type === 'video_upload' && $edukasi->media_path)
-                        <div class="sg-video-wrap">
-                            <video controls>
-                                <source src="{{ asset('storage/' . $edukasi->media_path) }}" type="video/mp4">
-                                Browser Anda tidak mendukung tag video.
-                            </video>
-                        </div>
+                        @if(\Illuminate\Support\Facades\Storage::disk('public')->exists($edukasi->media_path))
+                            <div class="sg-video-wrap">
+                                <video controls preload="metadata">
+                                    <source src="{{ asset('storage/' . $edukasi->media_path) }}" type="video/mp4">
+                                    Browser Anda tidak mendukung tag video.
+                                </video>
+                            </div>
+                        @else
+                            <div class="sg-note sg-note--warn">Media video untuk artikel ini sedang diperbarui. Silakan simak penjelasan materi lengkap di bawah ini.</div>
+                        @endif
                     @endif
                 </div>
 
